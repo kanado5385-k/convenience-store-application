@@ -9,10 +9,10 @@ import store.utilities.Parser;
 
 public class Promotion {
 
-    private String nameOfPromotion;
-    private Integer promotionBoon;
-    private String startDate;
-    private String endDate;
+    private final String nameOfPromotion;
+    private final Integer promotionBoon;
+    private final String startDate;
+    private final String endDate;
     
     public Promotion(String nameOfPromotion, Integer promotionBoon, String startDate, String endDate) {
         this.nameOfPromotion = nameOfPromotion;

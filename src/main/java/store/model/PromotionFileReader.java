@@ -8,7 +8,7 @@ import store.enums.ErrorMessage;
 import store.enums.FilePathConstants;
 
 public class PromotionFileReader {
-    private String filePath = FilePathConstants.PROMOTION_FILE_PATH.getConstants();
+    private final String filePath = FilePathConstants.PROMOTION_FILE_PATH.getConstants();
 
     public PromotionFileReader() {}
 

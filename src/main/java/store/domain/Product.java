@@ -3,10 +3,10 @@ package store.domain;
 public class Product {
     public static final int NOT_HAVE_PROMOTION = 0;
 
-    private String name;
-    private Integer price;
+    private final String name;
+    private final Integer price;
+    private final Integer promotionBoon;
     private Integer quantity;
-    private Integer promotionBoon;
 
     public Product(String name, Integer price, Integer quantity, Integer promotionBoon) {
         this.name = name;

@@ -26,7 +26,7 @@ public class ProductFileReader {
     private static final int TOKEN_QUANTITY = 2;
     private static final int TOKEN_PROMOTION = 3;
 
-    private String filePath = FilePathConstants.PRODUCT_FILE_PATH.getConstants();
+    private final String filePath = FilePathConstants.PRODUCT_FILE_PATH.getConstants();
 
     public ProductFileReader() {}
 
