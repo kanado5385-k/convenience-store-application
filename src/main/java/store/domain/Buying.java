@@ -1,5 +1,7 @@
 package store.domain;
 
+import store.enums.BuyingStatus;
+
 public class Buying {
     private BuyingStatus status;
 
