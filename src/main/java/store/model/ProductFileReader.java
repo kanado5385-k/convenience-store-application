@@ -11,6 +11,7 @@ import store.enums.FilePathConstants;
 import store.utilities.Splitter;
 
 public class ProductFileReader {
+    public static final String PRICE_FORMAT = "%,d%s";
     private static final String HEADER_PREFIX = "- ";
     private static final String WON_SUFFIX = "원";
     private static final String QUANTITY_SUFFIX = "개";
@@ -56,21 +57,18 @@ public class ProductFileReader {
 
     private String formatProductLine(String line) {
         String[] tokens = Splitter.splitStringLine(line);
-        String name = tokens[TOKEN_NAME];
-        String price = formatPrice(tokens[TOKEN_PRICE]);
-        String quantity = formatQuantity(tokens[TOKEN_QUANTITY]);
-        String promotion = formatPromotion(tokens[TOKEN_PROMOTION]);
-
-        String productLine = HEADER_PREFIX + name + " " + price + " " + quantity;
-        if (!promotion.isEmpty()) {
-            productLine += " " + promotion;
+        String productLine = HEADER_PREFIX + tokens[TOKEN_NAME] + " " 
+            + formatPrice(tokens[TOKEN_PRICE]) + " " + formatQuantity(tokens[TOKEN_QUANTITY]);
+        if (!formatPromotion(tokens[TOKEN_PROMOTION]).isEmpty()) {
+            productLine += " " + formatPromotion(tokens[TOKEN_PROMOTION]);
         }
+    
         return productLine;
     }
 
     private String formatPrice(String price) {
         int priceValue = Integer.parseInt(price);
-        return String.format("%,d%s", priceValue, WON_SUFFIX);
+        return String.format(PRICE_FORMAT, priceValue, WON_SUFFIX);
     }
 
     private String formatQuantity(String quantity) {
