@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import store.enums.ErrorMessage;
+import store.enums.FilePathConstants;
 
 public class ProductFileReader {
-    private static final String FILE_PATH = "src/main/resources/products.md";
     private static final String DELIMITER = ",";
     private static final String HEADER_PREFIX = "- ";
     private static final String WON_SUFFIX = "원";
@@ -26,7 +26,7 @@ public class ProductFileReader {
     private static final int TOKEN_QUANTITY = 2;
     private static final int TOKEN_PROMOTION = 3;
 
-    private String filePath = FILE_PATH;
+    private String filePath = FilePathConstants.FILE_PATH.getConstants();
 
     public ProductFileReader() {}
 
