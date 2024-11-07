@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 
 import store.enums.ErrorMessage;
 import store.enums.FilePathConstants;
+import store.utilities.Splitter;
 
 public class ProductFileReader {
-    private static final String DELIMITER = ",";
     private static final String HEADER_PREFIX = "- ";
     private static final String WON_SUFFIX = "원";
     private static final String QUANTITY_SUFFIX = "개";
@@ -55,7 +55,7 @@ public class ProductFileReader {
     }
 
     private String formatProductLine(String line) {
-        String[] tokens = line.split(DELIMITER);
+        String[] tokens = Splitter.splitStringLine(line);
         String name = tokens[TOKEN_NAME];
         String price = formatPrice(tokens[TOKEN_PRICE]);
         String quantity = formatQuantity(tokens[TOKEN_QUANTITY]);
