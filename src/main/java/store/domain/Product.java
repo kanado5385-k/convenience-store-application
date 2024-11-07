@@ -8,42 +8,51 @@ public class Product {
     private Integer quantity;
     private Integer promotionBoon;
 
-    public Product(String name, Integer price, Integer quantity, Integer promotionBoon){
+    public Product(String name, Integer price, Integer quantity, Integer promotionBoon) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
         this.promotionBoon = promotionBoon;  
     }
 
-    public boolean isSameName(String name){
+    public boolean isSameName(String name) {
         return this.name == name;
     }
 
-    public boolean isHavePromotion(){
+    public boolean isHavePromotion() {
         return this.promotionBoon != NOT_HAVE_PROMOTION; 
     }
 
-    public boolean isEnoughQuantity(Integer purchaseQuantity){
+    public boolean isEnoughQuantity(Integer purchaseQuantity) {
         return this.quantity >= purchaseQuantity;
     }
 
-    public void reduceQuantity(){
+    public void reduceQuantity() {
         this.quantity --;
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
-    public Integer getPrice(){
+    public Integer getPrice() {
         return this.price;
     }
 
-    public Integer getQuantity(){
+    public Integer getQuantity() {
         return this.quantity;
     }
 
-    public Integer getPromotionBoon(){
+    public Integer getPromotionBoon() {
         return this.promotionBoon;
+    }
+
+    public Integer addPriceToTotal(Integer totalPrice) {
+        return totalPrice += this.price;
+    }
+
+    public Integer getPromotionPrice(Integer quantityOfPromotionProduct){
+        Integer price = this.price/this.quantity;
+        return quantityOfPromotionProduct * price;
     }
 }
