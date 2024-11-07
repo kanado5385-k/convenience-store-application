@@ -1,7 +1,8 @@
 package store.enums;
 
 public enum FilePathConstants implements CommonConstants {
-    FILE_PATH("src/main/resources/products.md");
+    PRODUCT_FILE_PATH("src/main/resources/products.md"),
+    PROMOTION_FILE_PATH("src/main/resources/promotions.md");
 
     private final String constants;
 
