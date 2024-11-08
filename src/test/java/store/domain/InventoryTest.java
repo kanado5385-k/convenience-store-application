@@ -53,4 +53,15 @@ public class InventoryTest {
         assertEquals(5, gap);
     }
 
+    @Test
+    public void testReduceQuantityOfPromotionProduct() {
+        Product product = new Product("Apple", 1000, 10, "Promo1");
+        Promotion promotion = new Promotion("Promo1", 10, "2023-01-01", "2025-01-01");
+        Inventory inventory = new Inventory(Arrays.asList(product), Arrays.asList(promotion));
+
+        inventory.reduceQuantityOfPromotionProduct("Apple", 3);
+
+        assertEquals(9, product.getQuantity());
+    }
+
 }
