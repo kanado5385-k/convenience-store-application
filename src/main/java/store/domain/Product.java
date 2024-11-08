@@ -27,6 +27,10 @@ public class Product {
         return this.quantity >= purchaseQuantity;
     }
 
+    public int gapBetweenQuantity(int purchaseQuantity) {
+        return quantity - purchaseQuantity;
+    }
+
     public void reduceQuantity() {
         this.quantity --;
     }
