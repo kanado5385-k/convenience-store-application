@@ -1,7 +1,10 @@
 package store.domain;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 
@@ -38,4 +41,16 @@ public class InventoryTest {
 
         assertFalse(result);
     }
+
+    @Test
+    public void testCheckQuantityOfPromotionProduct_구매가능한수량() {
+        Product product = new Product("Apple", 1000, 10, "Promo1");
+        Promotion promotion = new Promotion("Promo1", 10, "2023-01-01", "2025-01-01");
+        Inventory inventory = new Inventory(Arrays.asList(product), Arrays.asList(promotion));
+
+        int gap = inventory.checkQuantityOfPromotionProduct("Apple", 5);
+
+        assertEquals(5, gap);
+    }
+
 }

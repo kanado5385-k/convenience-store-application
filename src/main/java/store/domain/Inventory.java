@@ -17,8 +17,11 @@ public class Inventory {
 
     public boolean isProductWithPromotion(String productName) {
         List<Product> productsWithPromotion = findProductsWithPromotion(productName);
+        if (!productsWithPromotion.isEmpty()) {
+            return isValidDateOfPromotion(productsWithPromotion);
+        }
 
-        return !productsWithPromotion.isEmpty() && isValidDateOfPromotion(productsWithPromotion);
+        return false;
     }
     
     private List<Product> findProductsWithPromotion(String productName) {
