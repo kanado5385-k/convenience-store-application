@@ -64,6 +64,7 @@ public class Inventory {
     public boolean isEnoughQuantityOfProduct(String productName, int purchaseQuantity) {
         List<Product> productsWithPromotion = findProductWithoutPromotion(productName);
         Product product = productsWithPromotion.get(GET_ONLY_ONE);
+        
         return product.isEnoughQuantity(purchaseQuantity);
     }
 
