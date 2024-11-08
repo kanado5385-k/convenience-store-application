@@ -42,7 +42,7 @@ public class Inventory {
         return promotion.isBetweenStartAndEndDate();
     } 
 
-    public int checkQuantityOfPromotionProduct(String productName, int quantity){
+    public int checkQuantityOfPromotionProduct(String productName, int quantity) {
         List<Product> productsWithPromotion = findProductsWithPromotion(productName);
         Product product = productsWithPromotion.get(GET_ONLY_ONE);
         return product.gapBetweenQuantity(quantity);
