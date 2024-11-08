@@ -1,14 +1,14 @@
 package store.domain;
 
 public class Product {
-    public static final int NOT_HAVE_PROMOTION = 0;
+    public static final String NOT_HAVE_PROMOTION = "null";
 
     private final String name;
     private final Integer price;
-    private final Integer promotionBoon;
+    private final String promotionBoon;
     private Integer quantity;
 
-    public Product(String name, Integer price, Integer quantity, Integer promotionBoon) {
+    public Product(String name, Integer price, Integer quantity, String promotionBoon) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
@@ -19,8 +19,8 @@ public class Product {
         return this.name == name;
     }
 
-    public boolean isHavePromotion() {
-        return this.promotionBoon != NOT_HAVE_PROMOTION; 
+    public boolean hasPromotion() {
+        return !NOT_HAVE_PROMOTION.equals(this.promotionBoon);
     }
 
     public boolean isEnoughQuantity(Integer purchaseQuantity) {
@@ -43,7 +43,7 @@ public class Product {
         return this.quantity;
     }
 
-    public Integer getPromotionBoon() {
+    public String getPromotionBoon() {
         return this.promotionBoon;
     }
 
