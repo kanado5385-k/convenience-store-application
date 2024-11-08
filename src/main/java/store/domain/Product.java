@@ -5,14 +5,14 @@ public class Product {
 
     private final String name;
     private final Integer price;
-    private final String promotionBoon;
+    private final String nameOfPromotion;
     private Integer quantity;
 
-    public Product(String name, Integer price, Integer quantity, String promotionBoon) {
+    public Product(String name, Integer price, Integer quantity, String nameOfPromotion) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
-        this.promotionBoon = promotionBoon;  
+        this.nameOfPromotion = nameOfPromotion;  
     }
 
     public boolean isSameName(String name) {
@@ -20,7 +20,7 @@ public class Product {
     }
 
     public boolean hasPromotion() {
-        return !NOT_HAVE_PROMOTION.equals(this.promotionBoon);
+        return !NOT_HAVE_PROMOTION.equals(this.nameOfPromotion);
     }
 
     public boolean isEnoughQuantity(Integer purchaseQuantity) {
@@ -44,7 +44,7 @@ public class Product {
     }
 
     public String getPromotionBoon() {
-        return this.promotionBoon;
+        return this.nameOfPromotion;
     }
 
     public Integer addPriceToTotal(Integer totalPrice) {
