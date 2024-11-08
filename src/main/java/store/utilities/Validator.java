@@ -3,6 +3,8 @@ package store.utilities;
 import store.enums.messages.ErrorMessage;
 
 public class Validator {
+    private static final int MINIMUM_AMOUNT = 0;
+
     public static void validateFormatOfOrder(String order) {
         validateStartsWithBracket(order);
         validateEndsWithBracket(order);
@@ -24,6 +26,12 @@ public class Validator {
     private static void validateContainsHyphen(String order) {
         if (!order.contains("-")) {
             throw new IllegalArgumentException(ErrorMessage.WRONG_FORMAT_OF_ORDER.getMessage());
+        }
+    }
+
+    public static void validateQuantityNumber(int quantity) {
+        if (quantity <= MINIMUM_AMOUNT) {
+            throw new IllegalArgumentException(ErrorMessage.NOT_NATURAL_NUMBER.getMessage());
         }
     }
 }

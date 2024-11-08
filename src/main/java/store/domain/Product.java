@@ -35,6 +35,10 @@ public class Product {
         this.quantity --;
     }
 
+    public void addQuantity(int quantity) {
+        this.quantity =+ quantity;
+    }
+
     public String getName() {
         return this.name;
     }
