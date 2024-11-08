@@ -12,16 +12,17 @@ public class Inventory {
         this.promotions = promotions;
     }
 
-    public boolean isProductWithPromotion(String productName){
-        List<Product> products = this.products.stream()
-            .filter(Product -> Product.isSameName(productName))
-            .filter(Product -> Product.hasPromotion())
-            .collect(Collectors.toList());
-        if (products.isEmpty()){
-            return false;
-        }
 
-        return isValidDateOfPromotion(products);      
+    public boolean isProductWithPromotion(String productName) {
+        List<Product> productsWithPromotion = findProductsWithPromotion(productName);
+        return !productsWithPromotion.isEmpty() && isValidDateOfPromotion(productsWithPromotion);
+    }
+    
+    private List<Product> findProductsWithPromotion(String productName) {
+        return this.products.stream()
+            .filter(product -> product.isSameName(productName))
+            .filter(Product::hasPromotion)
+            .collect(Collectors.toList());
     }
 
     private boolean isValidDateOfPromotion(List<Product> products){
