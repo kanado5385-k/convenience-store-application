@@ -1,7 +1,7 @@
 package store.domain;
 
 public class Product {
-    public static final String NOT_HAVE_PROMOTION = "null";
+    private static final String NOT_HAVE_PROMOTION = "null";
 
     private final String name;
     private final Integer price;

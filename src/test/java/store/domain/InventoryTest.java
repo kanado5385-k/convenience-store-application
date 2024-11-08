@@ -31,7 +31,7 @@ public class InventoryTest {
 
     @Test
     public void testIsProductWithPromotion_프로모션없음() {
-        Product product = new Product("Orange", 700, 15, Product.NOT_HAVE_PROMOTION);
+        Product product = new Product("Orange", 700, 15, "null");
         Inventory inventory = new Inventory(Arrays.asList(product), Arrays.asList());
 
         boolean result = inventory.isProductWithPromotion("Orange");

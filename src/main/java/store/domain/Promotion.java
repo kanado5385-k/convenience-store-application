@@ -8,7 +8,6 @@ import store.utilities.Parser;
 
 
 public class Promotion {
-
     private final String nameOfPromotion;
     private final Integer promotionBoon;
     private final String startDate;
