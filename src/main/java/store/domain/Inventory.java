@@ -16,7 +16,7 @@ public class Inventory {
 
 
     public boolean isProductWithPromotion(String productName) {
-        List<Product> productsWithPromotion = findProductsWithPromotion(productName);
+        List<Product> productsWithPromotion = findProductWithPromotion(productName);
         if (!productsWithPromotion.isEmpty()) {
             return isValidDateOfPromotion(productsWithPromotion);
         }
@@ -24,7 +24,7 @@ public class Inventory {
         return false;
     }
     
-    private List<Product> findProductsWithPromotion(String productName) {
+    private List<Product> findProductWithPromotion(String productName) {
         return this.products.stream()
             .filter(product -> product.isSameName(productName))
             .filter(Product::hasPromotion)
@@ -42,9 +42,35 @@ public class Inventory {
         return promotion.isBetweenStartAndEndDate();
     } 
 
-    public int checkQuantityOfPromotionProduct(String productName, int quantity) {
-        List<Product> productsWithPromotion = findProductsWithPromotion(productName);
+    public int checkQuantityOfPromotionProduct(String productName, int purchaseQuantity) {
+        List<Product> productsWithPromotion = findProductWithPromotion(productName);
         Product product = productsWithPromotion.get(GET_ONLY_ONE);
-        return product.gapBetweenQuantity(quantity);
+        return product.gapBetweenQuantity(purchaseQuantity);
     }
+
+    public void reduceQuantityOfPromotionProduct(String productName, int purchaseQuantity) {
+        List<Product> productsWithPromotion = findProductWithPromotion(productName);
+        Product product = productsWithPromotion.get(GET_ONLY_ONE);
+        product.reduceQuantity();
+    }
+
+    private List<Product> findProductWithoutPromotion(String productName) {
+        return this.products.stream()
+            .filter(product -> product.isSameName(productName))
+            .filter(product -> !product.hasPromotion())
+            .collect(Collectors.toList());
+    }
+
+    public boolean isEnoughQuantityOfProduct(String productName, int purchaseQuantity) {
+        List<Product> productsWithPromotion = findProductWithoutPromotion(productName);
+        Product product = productsWithPromotion.get(GET_ONLY_ONE);
+        return product.isEnoughQuantity(purchaseQuantity);
+    }
+
+    public void reduceQuantityOfProductWithoutPromotion(String productName, int purchaseQuantity) {
+        List<Product> productsWithPromotion = findProductWithoutPromotion(productName);
+        Product product = productsWithPromotion.get(GET_ONLY_ONE);
+        product.reduceQuantity();
+    }
+    
 }
