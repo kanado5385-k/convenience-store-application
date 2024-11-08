@@ -1,4 +1,4 @@
-package store.enums;
+package store.enums.constants;
 
 public enum FilePathConstants implements CommonConstants {
     PRODUCT_FILE_PATH("src/main/resources/products.md"),

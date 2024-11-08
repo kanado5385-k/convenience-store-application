@@ -6,8 +6,8 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import store.enums.ErrorMessage;
-import store.enums.FilePathConstants;
+import store.enums.constants.FilePathConstants;
+import store.enums.messages.ErrorMessage;
 import store.utilities.Splitter;
 
 public class ProductFileReader {

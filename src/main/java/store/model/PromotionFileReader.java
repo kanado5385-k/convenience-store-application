@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import store.enums.ErrorMessage;
-import store.enums.FilePathConstants;
+import store.enums.constants.FilePathConstants;
+import store.enums.messages.ErrorMessage;
 
 public class PromotionFileReader {
     private final String filePath = FilePathConstants.PROMOTION_FILE_PATH.getConstants();
