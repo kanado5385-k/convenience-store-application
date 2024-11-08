@@ -1,6 +1,8 @@
 package store.domain;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -72,6 +74,20 @@ public class InventoryTest {
         inventory.reduceQuantityOfProductWithoutPromotion("Orange", 5);
 
         assertEquals(19, product.getQuantity());
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "Orange, 15, 10, true",
+        "Orange, 15, 20, false"
+    })
+    public void testIsEnoughQuantityOfProduct(String productName, int productQuantity, int purchaseQuantity, boolean expectedResult) {
+        Product product = new Product(productName, 700, productQuantity, "null");
+        Inventory inventory = new Inventory(Arrays.asList(product), Arrays.asList());
+
+        boolean result = inventory.isEnoughQuantityOfProduct(productName, purchaseQuantity);
+
+        assertEquals(expectedResult, result);
     }
 
 }
