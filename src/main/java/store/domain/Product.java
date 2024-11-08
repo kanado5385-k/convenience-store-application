@@ -43,7 +43,7 @@ public class Product {
         return this.quantity;
     }
 
-    public String getPromotionBoon() {
+    public String getNameOfPromotion() {
         return this.nameOfPromotion;
     }
 

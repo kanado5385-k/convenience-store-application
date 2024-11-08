@@ -28,9 +28,9 @@ public class Inventory {
             .collect(Collectors.toList());
     }
 
-    private boolean isValidDateOfPromotion(List<Product> products){
+    private boolean isValidDateOfPromotion(List<Product> products) {
         Product product = products.get(GET_ONLY_ONE);
-        String promotionName = product.getPromotionBoon();
+        String promotionName = product.getNameOfPromotion();
         List<Promotion> promotions = this.promotions.stream()
             .filter(Promotion -> Promotion.isSamePromotionName(promotionName))
             .collect(Collectors.toList());
@@ -38,5 +38,7 @@ public class Inventory {
 
         return promotion.isBetweenStartAndEndDate();
     } 
+
+
 
 }
