@@ -42,16 +42,29 @@ public class Inventory {
         return promotion.isBetweenStartAndEndDate();
     } 
 
+    public int checkGapBetweenQuantityAndBoon(String productName, int purchaseQuantity){
+        Product product = getProductWithPromotion(productName);
+        String promotionName = product.getNameOfPromotion();
+        List<Promotion> promotions = this.promotions.stream()
+            .filter(Promotion -> Promotion.isSamePromotionName(promotionName))
+            .collect(Collectors.toList());
+        Promotion promotion = promotions.get(GET_ONLY_ONE);
+        return promotion.gapBetweenQuantityAndBoon(purchaseQuantity);
+    }
+
     public int checkQuantityOfPromotionProduct(String productName, int purchaseQuantity) {
-        List<Product> productsWithPromotion = findProductWithPromotion(productName);
-        Product product = productsWithPromotion.get(GET_ONLY_ONE);
+        Product product = getProductWithPromotion(productName);
         return product.gapBetweenQuantity(purchaseQuantity);
     }
 
     public void reduceQuantityOfPromotionProduct(String productName, int purchaseQuantity) {
-        List<Product> productsWithPromotion = findProductWithPromotion(productName);
-        Product product = productsWithPromotion.get(GET_ONLY_ONE);
+        Product product = getProductWithPromotion(productName);
         product.reduceQuantity();
+    }
+
+    private Product getProductWithPromotion(String productName){
+        List<Product> productsWithPromotion = findProductWithPromotion(productName);
+        return productsWithPromotion.get(GET_ONLY_ONE);
     }
 
     private List<Product> findProductWithoutPromotion(String productName) {
@@ -64,7 +77,7 @@ public class Inventory {
     public boolean isEnoughQuantityOfProduct(String productName, int purchaseQuantity) {
         List<Product> productsWithPromotion = findProductWithoutPromotion(productName);
         Product product = productsWithPromotion.get(GET_ONLY_ONE);
-        
+
         return product.isEnoughQuantity(purchaseQuantity);
     }
 

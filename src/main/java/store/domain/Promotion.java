@@ -37,4 +37,8 @@ public class Promotion {
     public Integer getPromotionBoon() {
         return this.promotionBoon;
     }
+
+    public int gapBetweenQuantityAndBoon(int purchaseQuantity) {
+        return promotionBoon - purchaseQuantity;
+    }
 }
