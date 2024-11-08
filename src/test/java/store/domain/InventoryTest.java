@@ -64,4 +64,14 @@ public class InventoryTest {
         assertEquals(9, product.getQuantity());
     }
 
+    @Test
+    public void testReduceQuantityOfProductWithoutPromotion() {
+        Product product = new Product("Orange", 700, 20, "null");
+        Inventory inventory = new Inventory(Arrays.asList(product), Arrays.asList());
+
+        inventory.reduceQuantityOfProductWithoutPromotion("Orange", 5);
+
+        assertEquals(19, product.getQuantity());
+    }
+
 }
