@@ -21,21 +21,11 @@ import store.domain.Promotion;
 import store.domain.PromotionFactory;
 
 public class StoreController {
-    private  Buying buying;
-    private  Inventory inventory;
-    private  Order order;
-    private  Receipt receipt;
-    private  ProductFileReader productFileReader;
-    private  ProductFileWriter productFileWriter;
-    private  PromotionFileReader promotionFileReader;
-    private  InputView inputView;
-    private  OutputView outputView;
-    private  ProductFactory productFactory;
-    private  PromotionFactory promotionFactory;
-    private  ReseiptService reseiptService;
+    private Buying buying;
+    private InputView inputView;
+    private OutputView outputView;
 
-
-    public StoreController(){
+    public StoreController() {
         this.inputView = new InputView();
         this.outputView = new OutputView();
         this.buying = Buying.startBuying();
@@ -44,57 +34,81 @@ public class StoreController {
     public void startBuying() {
         while (!isBuyingEnd()) {
             startOnePurchase();
-            endBuying();
+            handleBuyingEnd();
         }
     }
 
     private void startOnePurchase() {
         outputView.printWellcomeMessage();
+        Inventory inventory = loadInventory();
+        Order order = createOrder(inventory);
+        Receipt receipt = createReceipt(order);
+        printReceipt(order, receipt);
+        saveInventory(inventory);
+    }
 
-        this.productFileReader = new ProductFileReader();
-        this.promotionFileReader = new PromotionFileReader();
+    private Inventory loadInventory() {
+        ProductFileReader productFileReader = new ProductFileReader();
+        PromotionFileReader promotionFileReader = new PromotionFileReader();
         outputView.printProdocts(productFileReader.showProductsToUser());
+        List<Product> products = new ProductFactory().createProducts(productFileReader.readFileAsString());
+        List<Promotion> promotions = new PromotionFactory().createPromotions(promotionFileReader.readFileAsString());
 
-        this.productFactory = new ProductFactory();
-        this.promotionFactory = new PromotionFactory();
-        List<Product> products = productFactory.createProducts(productFileReader.readFileAsString());
-        List<Promotion> promotions = promotionFactory.createPromotions(promotionFileReader.readFileAsString());
-        this.inventory =  new Inventory(products, promotions);
+        return new Inventory(products, promotions);
+    }
 
+    private Order createOrder(Inventory inventory) {
         while (true) {
             try {
                 String stringOrder = inputView.readOrder();
-                this.order = Order.createOrder(stringOrder, inventory);
-                break;
+                return Order.createOrder(stringOrder, inventory);
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
         }
-
-
-        this.reseiptService = new ReseiptService();
-        ReseiptDTO reseiptDTO = this.reseiptService.createReseipt(this.order, this.receipt);
-        outputView.printReseipt(reseiptDTO);
-
-        this.productFileWriter = new ProductFileWriter();
-        this.productFileWriter.writeProductsToFile(this.inventory.getProducts());
     }
 
-    private void endBuying() {
-        String answerToAdditionalOrder = "";
+    private Receipt createReceipt(Order order) {
         while (true) {
             try {
-                answerToAdditionalOrder = inputView.readAdditionalOrderOrNot();
-                Validator.validateAnswer(answerToAdditionalOrder);
-                break;
+                String answerToMemberShip = inputView.readMemberShipOrNot();
+                return Receipt.createReceipt(order, answerToMemberShip);
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
         }
+    }
 
-        if (answerToAdditionalOrder.equals(AnswerConstants.ANSWER_NO.getConstants())){
+    private void printReceipt(Order order, Receipt receipt) {
+        ReseiptDTO reseiptDTO = new ReseiptService().createReseipt(order, receipt);
+        outputView.printReseipt(reseiptDTO);
+    }
+
+    private void saveInventory(Inventory inventory) {
+        new ProductFileWriter().writeProductsToFile(inventory.getProducts());
+    }
+
+    private void handleBuyingEnd() {
+        String answerToAdditionalOrder = readAdditionalOrderOrNot();
+        if (answerToAdditionalOrder.equals(AnswerConstants.ANSWER_NO.getConstants())) {
             buying.endBuying();
         }
+    }
+
+    private String readAdditionalOrderOrNot() {
+        while (true) {
+            try {
+                String answer = inputView.readAdditionalOrderOrNot();
+                return validateAnswerToAdditionalOrder(answer);
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private String validateAnswerToAdditionalOrder(String answer){
+        Validator.validateAnswer(answer);
+        return answer;
     }
 
     private boolean isBuyingEnd() {
