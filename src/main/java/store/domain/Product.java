@@ -71,12 +71,16 @@ public class Product {
         return price * quantity;
     }
 
-    public Integer getPromotionPrice(Integer quantityOfPromotionProduct) {
+    public Integer getPromotionPrice(Integer quantityOfPromotionProducts) {
         Integer price = this.price/this.quantity;
-        return quantityOfPromotionProduct * price;
+        return quantityOfPromotionProducts * price;
     }
 
     public boolean isSmallQuantityThanPromotionBoon(int promotionBoon) {
         return quantity < promotionBoon;
+    }
+
+    public Integer addPriceToTotal(int totalPrice) {
+        return price + totalPrice;
     }
 }
