@@ -1,6 +1,5 @@
 package store.domain;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,6 +10,16 @@ import store.utilities.Splitter;
 import store.utilities.Validator;
 
 public class Order {
+    private static final int INDEX_OF_BENEFIT= 0;
+    private static final int INDEX_OF_REJECTED_PRODUCT = 1;
+    private static final int INDEX_OF_PRODUCT_NAME = 0;
+    private static final int INDEX_OF_PRODUCT_QUANTITY = 1;
+    private static final int MORE_THAN_ONE_REJECTED_PRODUCT = 0;
+    private static final int NO_SAME_NAME_IN_MAP = 0;
+    private static final String DOES_NOT_MATTER = "null";
+
+
+
     private final Map<String, Integer> promotionProducts;
     private final List<Product> boughtProducts;
 
@@ -31,22 +40,26 @@ public class Order {
             Validator.validateFormatOfOrder(oneOrder);
             List<String> productAndQuantity = Splitter.splirOneOrder(order);
 
-            String productName = productAndQuantity.get(0);
-            int purchaseQuantity = Parser.parseNumberToInt(productAndQuantity.get(1));
+            String productName = productAndQuantity.get(INDEX_OF_PRODUCT_NAME);
+            int purchaseQuantity = Parser.parseNumberToInt(productAndQuantity.get(INDEX_OF_PRODUCT_QUANTITY));
             Validator.validateQuantityNumber(purchaseQuantity);
 
             if (inventory.isProductWithPromotion(productName)) {
-                int promotionalBenefits = inventory.buyPromotionProduct(productName, purchaseQuantity);
-            
+                List<Integer> resultOfBuyingPromotionProduct = inventory.buyPromotionProduct(productName, purchaseQuantity);
+                int promotionalBenefits = resultOfBuyingPromotionProduct.get(INDEX_OF_BENEFIT);
+                if(resultOfBuyingPromotionProduct.get(INDEX_OF_REJECTED_PRODUCT) > MORE_THAN_ONE_REJECTED_PRODUCT){
+                    purchaseQuantity -= resultOfBuyingPromotionProduct.get(INDEX_OF_REJECTED_PRODUCT);
+                }
+                
                 promotionProduct.put(productName, 
-                    promotionProduct.getOrDefault(productName, 0) + promotionalBenefits);
+                    promotionProduct.getOrDefault(productName, NO_SAME_NAME_IN_MAP) + promotionalBenefits);
             }
             if (!inventory.isProductWithPromotion(productName)){
                 inventory.buyGeneralProduct(productName, purchaseQuantity);
             }
 
             int priceOfOneProductPacket = inventory.getPriceOfProductPacket(productName,purchaseQuantity);
-            Product boughtProduct = new Product(productName, priceOfOneProductPacket, purchaseQuantity, "null");
+            Product boughtProduct = new Product(productName, priceOfOneProductPacket, purchaseQuantity, DOES_NOT_MATTER);
             boughtProducts.add(boughtProduct);
 
         }

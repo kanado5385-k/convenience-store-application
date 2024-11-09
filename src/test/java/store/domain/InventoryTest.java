@@ -21,8 +21,8 @@ class InventoryTest {
             List.of(promotion)
         );
 
-        int result = inventory.buyPromotionProduct("콜라", 3);
-        assertThat(result).isEqualTo(1);
+        List<Integer> result = inventory.buyPromotionProduct("콜라", 3);
+        assertThat(result.get(0)).isEqualTo(1);
         assertThat(productWithPromotion.getQuantity()).isEqualTo(7);
     }
 
@@ -37,8 +37,8 @@ class InventoryTest {
             List.of(promotion)
         );
 
-        int result = inventory.buyPromotionProduct("콜라", 5);
-        assertThat(result).isEqualTo(0);
+        List<Integer> result = inventory.buyPromotionProduct("콜라", 5);
+        assertThat(result.get(0)).isEqualTo(0);
         assertThat(productWithPromotion.getQuantity()).isEqualTo(0);
         assertThat(productWithoutPromotion.getQuantity()).isEqualTo(7);
     }
@@ -68,9 +68,9 @@ class InventoryTest {
             List.of(productWithPromotion),
             List.of(promotion)
         );
-
-        int result = inventory.buyPromotionProduct("콜라", 1);
-        assertThat(result).isEqualTo(0);
+        
+        List<Integer> result = inventory.buyPromotionProduct("콜라", 1);
+        assertThat(result.get(0)).isEqualTo(0);
         assertThat(productWithPromotion.getQuantity()).isEqualTo(9);
     }
 
@@ -87,9 +87,9 @@ class InventoryTest {
         String simulatedInput = "N\n";
         System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
 
-        int result = inventory.buyPromotionProduct("콜라", 2);
+        List<Integer> result = inventory.buyPromotionProduct("콜라", 2);
 
-        assertThat(result).isEqualTo(0);
+        assertThat(result.get(0)).isEqualTo(0);
         assertThat(productWithPromotion.getQuantity()).isEqualTo(8);
     }
 
@@ -105,9 +105,9 @@ class InventoryTest {
         String simulatedInput = "Y\n";
         System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
 
-        int result = inventory.buyPromotionProduct("콜라", 2);
+        List<Integer> result = inventory.buyPromotionProduct("콜라", 2);
 
-        assertThat(result).isEqualTo(1);
+        assertThat(result.get(0)).isEqualTo(1);
         assertThat(productWithPromotion.getQuantity()).isEqualTo(7);
     }
 
@@ -125,9 +125,9 @@ class InventoryTest {
         String simulatedInput = "Y\n";
         System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
 
-        int result = inventory.buyPromotionProduct("콜라", 10);
+        List<Integer> result = inventory.buyPromotionProduct("콜라", 10);
 
-        assertThat(result).isEqualTo(2);
+        assertThat(result.get(0)).isEqualTo(2);
         assertThat(productWithPromotion.getQuantity()).isEqualTo(0);
         assertThat(productWithoutPromotion.getQuantity()).isEqualTo(7);
     }
@@ -146,9 +146,9 @@ class InventoryTest {
         String simulatedInput = "Y\n";
         System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
 
-        int result = inventory.buyPromotionProduct("콜라", 10);
+        List<Integer> result = inventory.buyPromotionProduct("콜라", 10);
 
-        assertThat(result).isEqualTo(3);
+        assertThat(result.get(0)).isEqualTo(3);
         assertThat(productWithPromotion.getQuantity()).isEqualTo(10);
         assertThat(productWithoutPromotion.getQuantity()).isEqualTo(10);
     }

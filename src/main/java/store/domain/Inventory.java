@@ -1,5 +1,6 @@
 package store.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,14 +55,25 @@ public class Inventory {
         return promotion.isBetweenStartAndEndDate();
     }
 
-    public int buyPromotionProduct(String productName, int purchaseQuantity) {
+
+    public List<Integer> buyPromotionProduct(String productName, int purchaseQuantity) {
+        List<Integer> resultList = new ArrayList<>();
+        
         Product productWithPromotion = getProductWithPromotion(productName);
         int promotionBoon = getPromotionBoon(productName);
-
+    
+        int result;
+        int lackQuantity = 0;
         if (productWithPromotion.isSmallQuantityThanPromotionBoon(promotionBoon)) {
-            return handleSmallQuantityCase(productName, purchaseQuantity, productWithPromotion);
+            result = handleSmallQuantityCase(productName, purchaseQuantity, productWithPromotion);
+        } else {
+            result = processPurchaseQuantity(productName, purchaseQuantity, productWithPromotion, promotionBoon);
         }
-        return processPurchaseQuantity(productName, purchaseQuantity, productWithPromotion, promotionBoon);
+    
+        resultList.add(result);
+        resultList.add(lackQuantity);
+    
+        return resultList;
     }
 
     private int processPurchaseQuantity(String productName, int purchaseQuantity,
@@ -174,31 +186,37 @@ public class Inventory {
         return result + ONE_PROMOTION_BOON;
     }
 
+
     private int handleInsufficientQuantityInLoop(String productName, int currentQuantity,
-                                                 int currentPurchaseQuantity, int result) {
-        currentPurchaseQuantity += GET_ONE_FREE;
-        handleLackOfQuantity(productName, currentQuantity, currentPurchaseQuantity);
-        return result;
-    }
+                                             int currentPurchaseQuantity, int result) {
+    currentPurchaseQuantity += GET_ONE_FREE;
+    int lackQuantity = handleLackOfQuantity(productName, currentQuantity, currentPurchaseQuantity);
+    return result + lackQuantity; // 부족한 수량 포함
+}
 
     private int handleExcessQuantity(String productName, int currentPurchaseQuantity,
-                                     Product productWithPromotion, int promotionBoon, int result) {
+            Product productWithPromotion, int promotionBoon, int result) {
         productWithPromotion.addQuantity(promotionBoon);
-        result += buyPromotionProduct(productName, currentPurchaseQuantity + promotionBoon);
+        List<Integer> promotionResult = buyPromotionProduct(productName, currentPurchaseQuantity + promotionBoon);
+        result += promotionResult.get(0);
         return result;
     }
 
-    private void handleLackOfQuantity(String productName, int currentQuantity, int currentPurchaseQuantity) {
+    private int handleLackOfQuantity(String productName, int currentQuantity, int currentPurchaseQuantity) {
         String answer = getValidatedAnswerToLackOfQuantity(productName, currentPurchaseQuantity);
-        processLackOfQuantityAnswer(productName, currentQuantity, answer);
+        return processLackOfQuantityAnswer(productName, currentQuantity, answer);
     }
 
-    private void processLackOfQuantityAnswer(String productName, int currentQuantity, String answer) {
+    private int processLackOfQuantityAnswer(String productName, int currentQuantity, String answer) {
         if (answer.equals(AnswerConstants.ANSWER_YES.getConstants())) {
             handleValidQuantityReduction(productName, currentQuantity);
+            return 0;  // 프로모션 상품 사용
+        } else if (answer.equals(AnswerConstants.ANSWER_NO.getConstants())) {
+            return currentQuantity;  // 프로모션을 적용하지 않은 수량 반환
         }
+        return 0;  // 기본값
     }
-
+    
     private void handleValidQuantityReduction(String productName, int currentQuantity) {
         Product productWithoutPromotion = getProductWithoutPromotion(productName);
         int requiredQuantity = Math.abs(currentQuantity) + GET_ONE_FREE;
