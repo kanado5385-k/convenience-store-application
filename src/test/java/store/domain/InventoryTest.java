@@ -95,7 +95,6 @@ class InventoryTest {
 
     @Test
     void 프로모션_상품_구매_손님이_덜_가져올_경우_시용자_Y() {
-
         Product productWithPromotion = new Product("콜라", 1000, 10, "탄산2+1");
         Promotion promotion = new Promotion("탄산2+1", 2, "2023-01-01", "2025-01-01");
         Inventory inventory = new Inventory(

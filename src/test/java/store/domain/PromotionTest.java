@@ -40,6 +40,6 @@ class PromotionTest {
 
     @Test
     void 프로모션_혜택_반환_테스트() {
-        assertThat(promotion.getPromotionBoon()).isEqualTo(2);
+        assertThat(promotion.getPromotionBoon()).isEqualTo(3);
     }
 }
