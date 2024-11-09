@@ -3,12 +3,17 @@ package store.domain;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import store.enums.constants.AnswerConstants;
 import store.enums.messages.ErrorMessage;
+import store.utilities.Validator;
+import store.view.input.InputViewOfPromotionIssue;
 
 public class Inventory {
     private static final int GET_ONLY_ONE = 0;
     private static final int NO_ANY_PRODUCT = 0;
+    private static final int GET_ONE_FREE = 1;
     private static final int NO_ANY_PROMOTION_BOON = 0;
+    private static final int ONE_PROMOTION_BOON = 1;
 
 
     private final List<Product> products;
@@ -83,20 +88,51 @@ public class Inventory {
 
 
     
-    public int buyingPromotionPriduct(String productName, int purchaseQuantity) {
+    public int buyingPromotionPriduct(String productName, int purchaseQuantity, InputViewOfPromotionIssue input) {
         Product productWithPromotion = getProductWithPromotion(productName);
-        
-        if(productWithPromotion.isSmallQuantityThanPromotionBoon(getPromotionBoon(productName))) {
-            int currentQuantityOfProduct = productWithPromotion.reduceQuantityOfPromotionProduct(purchaseQuantity);
+        int promotionBoon = getPromotionBoon(productName);
+        if(productWithPromotion.isSmallQuantityThanPromotionBoon(promotionBoon)) {
+            int currentQuantityOfProduct = productWithPromotion.firstReduceQuantityThanCheck(purchaseQuantity);
             if(currentQuantityOfProduct < NO_ANY_PRODUCT) {
                 Product productWithoutPromotion = getProductWithoutPromotion(productName);
                 if(productWithoutPromotion.isNotEnoughQuantityToBuy(Math.abs(currentQuantityOfProduct))) {
                     throw new IllegalArgumentException(ErrorMessage.LACK_OF_PRODUCT.getMessage());
                 }
                 productWithoutPromotion.reduceQuantity(Math.abs(currentQuantityOfProduct));
+
                 return NO_ANY_PROMOTION_BOON;
             }
-        }return 1; //for test
+        }
+        if(purchaseQuantity == promotionBoon) {
+            productWithPromotion.reduceQuantity(purchaseQuantity);
+
+            return ONE_PROMOTION_BOON;
+        }
+        if(purchaseQuantity < (promotionBoon - GET_ONE_FREE)) {
+            productWithPromotion.reduceQuantity(purchaseQuantity);
+
+            return NO_ANY_PROMOTION_BOON;
+        }
+        if(purchaseQuantity == (promotionBoon - GET_ONE_FREE)) {
+            boolean isValid = false;
+            String answer = "";
+            while (!isValid) {
+                try {
+                    answer = input.readAnswerToOneMoreProduct(productName);
+                    Validator.validateAnswer(answer);
+                    isValid = true;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+            if(answer.equals(AnswerConstants.ANSWER_YES.getConstants())) {
+                productWithPromotion.reduceQuantity(purchaseQuantity + ONE_PROMOTION_BOON);
+                return ONE_PROMOTION_BOON;
+            }
+            productWithPromotion.reduceQuantity(purchaseQuantity);
+            return NO_ANY_PROMOTION_BOON;
+        }
+        return 1; //for test
 
     }
 }

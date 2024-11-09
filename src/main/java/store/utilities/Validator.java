@@ -1,5 +1,6 @@
 package store.utilities;
 
+import store.enums.constants.AnswerConstants;
 import store.enums.messages.ErrorMessage;
 
 public class Validator {
@@ -32,6 +33,13 @@ public class Validator {
     public static void validateQuantityNumber(int quantity) {
         if (quantity <= MINIMUM_AMOUNT) {
             throw new IllegalArgumentException(ErrorMessage.NOT_NATURAL_NUMBER.getMessage());
+        }
+    }
+
+    public static void validateAnswer(String answer) {
+        if (!answer.equals(AnswerConstants.ANSWER_YES.getConstants()) && 
+            !answer.equals(AnswerConstants.ANSWER_NO.getConstants())) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_INPUT_ANSWER.getMessage());
         }
     }
 }
