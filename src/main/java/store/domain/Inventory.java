@@ -18,10 +18,16 @@ public class Inventory {
     public boolean isProductWithPromotion(String productName) {
         List<Product> productsWithPromotion = findProductWithPromotion(productName);
         if (!productsWithPromotion.isEmpty()) {
-            return isValidDateOfPromotion(productsWithPromotion);
+            return isEnoughQuantityOfPromotionProduct(productsWithPromotion) 
+            && isValidDateOfPromotion(productsWithPromotion);
         }
 
         return false;
+    }
+
+    private boolean isEnoughQuantityOfPromotionProduct(List<Product> products){
+        Product product = products.get(GET_ONLY_ONE);
+        return product.isEnoughQuantity();
     }
     
     private List<Product> findProductWithPromotion(String productName) {
@@ -42,7 +48,7 @@ public class Inventory {
         return promotion.isBetweenStartAndEndDate();
     } 
 
-    public int checkGapBetweenQuantityAndBoon(String productName, int purchaseQuantity){
+    public int checkGapBetweenQuantityAndBoon(String productName, int purchaseQuantity){ //수정
         Product product = getProductWithPromotion(productName);
         String promotionName = product.getNameOfPromotion();
         List<Promotion> promotions = this.promotions.stream()
@@ -52,7 +58,7 @@ public class Inventory {
         return promotion.gapBetweenQuantityAndBoon(purchaseQuantity);
     }
 
-    public int checkQuantityOfPromotionProduct(String productName, int purchaseQuantity) {
+    public int checkQuantityOfPromotionProduct(String productName, int purchaseQuantity) { // 수정
         Product product = getProductWithPromotion(productName);
         return product.gapBetweenQuantity(purchaseQuantity);
     }

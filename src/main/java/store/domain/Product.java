@@ -2,6 +2,7 @@ package store.domain;
 
 public class Product {
     private static final String NOT_HAVE_PROMOTION = "null";
+    private static final int NO_ANY_PRODUCT = 0;
 
     private final String name;
     private final Integer price;
@@ -23,8 +24,8 @@ public class Product {
         return !NOT_HAVE_PROMOTION.equals(this.nameOfPromotion);
     }
 
-    public boolean isEnoughQuantity(Integer purchaseQuantity) {
-        return this.quantity >= purchaseQuantity;
+    public boolean isEnoughQuantity() {
+        return this.quantity > NO_ANY_PRODUCT;
     }
 
     public int gapBetweenQuantity(int purchaseQuantity) {

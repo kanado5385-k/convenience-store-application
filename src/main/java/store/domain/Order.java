@@ -34,7 +34,7 @@ public class Order {
             int quantity = Parser.parseNumberToInt(productAndQuantity.get(1));
             Validator.validateQuantityNumber(quantity);
 
-            if(forCheckDublicatProduct.contains(product)) {
+            if(forCheckDublicatProduct.contains(product)) { //순서 바꾸기
                 for(Product product1 : boughtProducts){
                     if(product1.isSameName(product)) {
                         product1.addQuantity(quantity);
