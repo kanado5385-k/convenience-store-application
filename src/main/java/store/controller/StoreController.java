@@ -39,7 +39,7 @@ public class StoreController {
     }
 
     private void startOnePurchase() {
-        outputView.printWellcomeMessage();
+        outputView.printWelcomeMessage();
         Inventory inventory = loadInventory();
         Order order = createOrder(inventory);
         Receipt receipt = createReceipt(order);

@@ -30,7 +30,7 @@ public class OutputView {
     private static final String MEMBERSHIP_DISCOUNT_LABEL = "멤버십할인";
     private static final String FINAL_PAYMENT_LABEL = "내실돈";
 
-    public void printWellcomeMessage() {
+    public void printWelcomeMessage() {
         System.out.println(IOMessage.PRINT_WELLCOME_MESSAGE.getMessage());
     }
 
