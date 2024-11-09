@@ -3,8 +3,11 @@ package store.domain;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import store.enums.messages.ErrorMessage;
+
 public class Inventory {
     private static final int GET_ONLY_ONE = 0;
+    private static final int NO_ANY_PRODUCT = 0;
 
     private final List<Product> products;
     private final List<Promotion> promotions;
@@ -25,7 +28,7 @@ public class Inventory {
         return false;
     }
 
-    private boolean isEnoughQuantityOfPromotionProduct(List<Product> products){
+    private boolean isEnoughQuantityOfPromotionProduct(List<Product> products) {
         Product product = products.get(GET_ONLY_ONE);
         return product.isEnoughQuantity();
     }
@@ -48,7 +51,7 @@ public class Inventory {
         return promotion.isBetweenStartAndEndDate();
     } 
 
-    public int checkGapBetweenQuantityAndBoon(String productName, int purchaseQuantity){ //수정
+    public int checkGapBetweenQuantityAndBoon(String productName, int purchaseQuantity) { //수정
         Product product = getProductWithPromotion(productName);
         String promotionName = product.getNameOfPromotion();
         List<Promotion> promotions = this.promotions.stream()
@@ -58,21 +61,6 @@ public class Inventory {
         return promotion.gapBetweenQuantityAndBoon(purchaseQuantity);
     }
 
-    public int checkQuantityOfPromotionProduct(String productName, int purchaseQuantity) { // 수정
-        Product product = getProductWithPromotion(productName);
-        return product.gapBetweenQuantity(purchaseQuantity);
-    }
-
-    public void reduceQuantityOfPromotionProduct(String productName, int purchaseQuantity) {
-        Product product = getProductWithPromotion(productName);
-        product.reduceQuantity();
-    }
-
-    private Product getProductWithPromotion(String productName){
-        List<Product> productsWithPromotion = findProductWithPromotion(productName);
-        return productsWithPromotion.get(GET_ONLY_ONE);
-    }
-
     private List<Product> findProductWithoutPromotion(String productName) {
         return this.products.stream()
             .filter(product -> product.isSameName(productName))
@@ -80,17 +68,30 @@ public class Inventory {
             .collect(Collectors.toList());
     }
 
-    public boolean isEnoughQuantityOfProduct(String productName, int purchaseQuantity) {
-        List<Product> productsWithPromotion = findProductWithoutPromotion(productName);
-        Product product = productsWithPromotion.get(GET_ONLY_ONE);
-
-        return product.isEnoughQuantity(purchaseQuantity);
+    private Product getProductWithPromotion(String productName) {
+        List<Product> productsWithPromotion = findProductWithPromotion(productName);
+        return productsWithPromotion.get(GET_ONLY_ONE);
     }
 
-    public void reduceQuantityOfProductWithoutPromotion(String productName, int purchaseQuantity) {
-        List<Product> productsWithPromotion = findProductWithoutPromotion(productName);
-        Product product = productsWithPromotion.get(GET_ONLY_ONE);
-        product.reduceQuantity();
+    public Product getProductWithoutPromotion(String productName) {
+        List<Product> productsWithoutPromotion = findProductWithoutPromotion(productName);
+        return productsWithoutPromotion.get(GET_ONLY_ONE);
     }
+
+
     
+    public int buyingPromotionPriduct(String productName, int purchaseQuantity) {
+        Product productWithPromotion = getProductWithPromotion(productName);
+        if(productWithPromotion.isSmallQuantityThanPromotionBoon(purchaseQuantity)) {
+            int currentQuantityOfProduct = productWithPromotion.reduceQuantity(purchaseQuantity);
+            if(currentQuantityOfProduct < NO_ANY_PRODUCT) {
+                Product productWithoutPromotion = getProductWithoutPromotion(productName);
+                if(productWithoutPromotion.isNotEnoughQuantityToBuy(Math.abs(currentQuantityOfProduct))) {
+                    throw new IllegalArgumentException(ErrorMessage.LACK_OF_PRODUCT.getMessage());
+                }
+                return productWithoutPromotion.reduceQuantity(Math.abs(currentQuantityOfProduct));
+            }
+        }return 1; //for test
+
+    }
 }

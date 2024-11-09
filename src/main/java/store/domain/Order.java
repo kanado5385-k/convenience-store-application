@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import store.enums.messages.ErrorMessage;
 import store.utilities.Parser;
 import store.utilities.Splitter;
 import store.utilities.Validator;
@@ -43,12 +44,7 @@ public class Order {
             }
 
             if(inventory.isProductWithPromotion(product)){
-                int quantityOfPromotionProduct = inventory.checkQuantityOfPromotionProduct(product, quantity);
-                int gapBetweenQuantityAndBoon = inventory.checkGapBetweenQuantityAndBoon(product, quantity);
-                if(quantityOfPromotionProduct < 0){ // n만큼 정가로 해도 되는지 물어보기
-                    return;
-                }
-                if(gapBetweenQuantityAndBoon > 0) 
+                
             }
 
 

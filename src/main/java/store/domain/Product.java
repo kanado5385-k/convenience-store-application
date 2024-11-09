@@ -28,12 +28,19 @@ public class Product {
         return this.quantity > NO_ANY_PRODUCT;
     }
 
-    public int gapBetweenQuantity(int purchaseQuantity) {
-        return quantity - purchaseQuantity;
+    public boolean isNotEnoughQuantityToBuy(int quantity) {
+        return this.quantity < quantity;
     }
 
-    public void reduceQuantity() {
-        this.quantity --;
+    public int reduceQuantity(int purchaseQuantity) {
+        int currentQuantity = this.quantity - purchaseQuantity;
+        if(currentQuantity < NO_ANY_PRODUCT) {
+            this.quantity = NO_ANY_PRODUCT;
+            return currentQuantity;
+        }
+        this.quantity = currentQuantity;
+
+        return currentQuantity;
     }
 
     public void addQuantity(int quantity) {
@@ -60,8 +67,12 @@ public class Product {
         return totalPrice += this.price;
     }
 
-    public Integer getPromotionPrice(Integer quantityOfPromotionProduct){
+    public Integer getPromotionPrice(Integer quantityOfPromotionProduct) {
         Integer price = this.price/this.quantity;
         return quantityOfPromotionProduct * price;
+    }
+
+    public boolean isSmallQuantityThanPromotionBoon(int promotionBoon) {
+        return quantity < promotionBoon;
     }
 }
