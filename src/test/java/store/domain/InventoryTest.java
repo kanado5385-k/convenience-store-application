@@ -4,11 +4,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import store.enums.messages.ErrorMessage;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class InventoryTest {
 
@@ -42,6 +47,39 @@ public class InventoryTest {
         boolean result = inventory.isProductWithPromotion("Orange");
 
         assertFalse(result);
+    }
+
+    @Test
+    void 프로모션_상품_구매_재고_부족_일반상품에서_재고차감() {
+        Product productWithPromotion = new Product("콜라", 1000, 2, "탄산2+1");
+        Product productWithoutPromotion = new Product("콜라", 1000, 10, "null");
+        Promotion promotion = new Promotion("탄산2+1", 2, "2023-01-01", "2025-01-01");
+
+        Inventory inventory = new Inventory(
+            List.of(productWithPromotion, productWithoutPromotion),
+            List.of(promotion)
+        );
+
+        int result = inventory.buyingPromotionPriduct("콜라", 5);
+        assertThat(result).isEqualTo(0);
+        assertThat(productWithPromotion.getQuantity()).isEqualTo(0);
+        assertThat(productWithoutPromotion.getQuantity()).isEqualTo(7);
+    }
+
+    @Test
+    void 프로모션_상품_및_일반_상품_재고_부족으로_예외() {
+        Product productWithPromotion = new Product("콜라", 1000, 2, "탄산2+1");
+        Product productWithoutPromotion = new Product("콜라", 1000, 1, "null");
+        Promotion promotion = new Promotion("탄산2+1", 2, "2023-01-01", "2025-01-01");
+
+        Inventory inventory = new Inventory(
+            List.of(productWithPromotion, productWithoutPromotion),
+            List.of(promotion)
+        );
+
+        assertThatThrownBy(() -> inventory.buyingPromotionPriduct("콜라", 5))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage(ErrorMessage.LACK_OF_PRODUCT.getMessage());
     }
 
     /**

@@ -20,6 +20,8 @@ public class Order {
         this.boughtProducts = boughtProducts;
     }
 
+
+    /*
     public static Order createOrder(String order, Inventory inventory) {
         Map<String, Integer> promotionProduct = new HashMap<>();
         List<Product> boughtProducts = new LinkedList<>();
@@ -27,7 +29,7 @@ public class Order {
         List<String> forCheckDublicatProduct = new ArrayList<>();
 
         List<String> orderList = Splitter.splitStringOrder(order);
-        for(String oneOrder : orderList) {
+        for (String oneOrder : orderList) {
             Validator.validateFormatOfOrder(oneOrder);
             List<String> productAndQuantity = Splitter.splirOneOrder(order);
 
@@ -35,23 +37,18 @@ public class Order {
             int quantity = Parser.parseNumberToInt(productAndQuantity.get(1));
             Validator.validateQuantityNumber(quantity);
 
-            if(forCheckDublicatProduct.contains(product)) { //순서 바꾸기
-                for(Product product1 : boughtProducts){
-                    if(product1.isSameName(product)) {
+            if (forCheckDublicatProduct.contains(product)) { // 순서 바꾸기
+                for (Product product1 : boughtProducts) {
+                    if (product1.isSameName(product)) {
                         product1.addQuantity(quantity);
                     }
                 }
             }
 
-            if(inventory.isProductWithPromotion(product)){
-                
+            if (inventory.isProductWithPromotion(product)) {
             }
-
-
         }
-
     }
-
-
+    */
 
 }

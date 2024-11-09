@@ -10,6 +10,7 @@ public class Inventory {
     private static final int NO_ANY_PRODUCT = 0;
     private static final int NO_ANY_PROMOTION_BOON = 0;
 
+
     private final List<Product> products;
     private final List<Promotion> promotions;
 
@@ -52,14 +53,15 @@ public class Inventory {
         return promotion.isBetweenStartAndEndDate();
     } 
 
-    public int checkGapBetweenQuantityAndBoon(String productName, int purchaseQuantity) { //수정
+    private int getPromotionBoon(String productName) {
         Product product = getProductWithPromotion(productName);
         String promotionName = product.getNameOfPromotion();
         List<Promotion> promotions = this.promotions.stream()
             .filter(Promotion -> Promotion.isSamePromotionName(promotionName))
             .collect(Collectors.toList());
         Promotion promotion = promotions.get(GET_ONLY_ONE);
-        return promotion.gapBetweenQuantityAndBoon(purchaseQuantity);
+
+        return promotion.getPromotionBoon();
     }
 
     private List<Product> findProductWithoutPromotion(String productName) {
@@ -83,7 +85,8 @@ public class Inventory {
     
     public int buyingPromotionPriduct(String productName, int purchaseQuantity) {
         Product productWithPromotion = getProductWithPromotion(productName);
-        if(productWithPromotion.isSmallQuantityThanPromotionBoon(purchaseQuantity)) {
+        
+        if(productWithPromotion.isSmallQuantityThanPromotionBoon(getPromotionBoon(productName))) {
             int currentQuantityOfProduct = productWithPromotion.reduceQuantityOfPromotionProduct(purchaseQuantity);
             if(currentQuantityOfProduct < NO_ANY_PRODUCT) {
                 Product productWithoutPromotion = getProductWithoutPromotion(productName);

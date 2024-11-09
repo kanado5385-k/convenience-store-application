@@ -8,6 +8,8 @@ import store.utilities.Parser;
 
 
 public class Promotion {
+    private static final int GET_ONE_FREE = 1;
+
     private final String nameOfPromotion;
     private final Integer promotionBoon;
     private final String startDate;
@@ -35,7 +37,7 @@ public class Promotion {
     }
 
     public Integer getPromotionBoon() {
-        return this.promotionBoon;
+        return this.promotionBoon + GET_ONE_FREE;
     }
 
     public int gapBetweenQuantityAndBoon(int purchaseQuantity) {
