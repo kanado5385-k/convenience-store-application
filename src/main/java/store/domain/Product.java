@@ -32,7 +32,7 @@ public class Product {
         return this.quantity < quantity;
     }
 
-    public int reduceQuantity(int purchaseQuantity) {
+    public int reduceQuantityOfPromotionProduct(int purchaseQuantity) {
         int currentQuantity = this.quantity - purchaseQuantity;
         if(currentQuantity < NO_ANY_PRODUCT) {
             this.quantity = NO_ANY_PRODUCT;
@@ -41,6 +41,10 @@ public class Product {
         this.quantity = currentQuantity;
 
         return currentQuantity;
+    }
+
+    public void reduceQuantity(int purchaseQuantity){
+        this.quantity -= purchaseQuantity;
     }
 
     public void addQuantity(int quantity) {

@@ -8,6 +8,7 @@ import store.enums.messages.ErrorMessage;
 public class Inventory {
     private static final int GET_ONLY_ONE = 0;
     private static final int NO_ANY_PRODUCT = 0;
+    private static final int NO_ANY_PROMOTION_BOON = 0;
 
     private final List<Product> products;
     private final List<Promotion> promotions;
@@ -83,13 +84,14 @@ public class Inventory {
     public int buyingPromotionPriduct(String productName, int purchaseQuantity) {
         Product productWithPromotion = getProductWithPromotion(productName);
         if(productWithPromotion.isSmallQuantityThanPromotionBoon(purchaseQuantity)) {
-            int currentQuantityOfProduct = productWithPromotion.reduceQuantity(purchaseQuantity);
+            int currentQuantityOfProduct = productWithPromotion.reduceQuantityOfPromotionProduct(purchaseQuantity);
             if(currentQuantityOfProduct < NO_ANY_PRODUCT) {
                 Product productWithoutPromotion = getProductWithoutPromotion(productName);
                 if(productWithoutPromotion.isNotEnoughQuantityToBuy(Math.abs(currentQuantityOfProduct))) {
                     throw new IllegalArgumentException(ErrorMessage.LACK_OF_PRODUCT.getMessage());
                 }
-                return productWithoutPromotion.reduceQuantity(Math.abs(currentQuantityOfProduct));
+                productWithoutPromotion.reduceQuantity(Math.abs(currentQuantityOfProduct));
+                return NO_ANY_PROMOTION_BOON;
             }
         }return 1; //for test
 
