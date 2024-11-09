@@ -3,6 +3,10 @@ package store.domain;
 import java.util.List;
 import java.util.Map;
 
+import store.enums.constants.AnswerConstants;
+import store.utilities.Validator;
+
+
 public class Receipt {
     private static final double MEMBER_SHIP_DISCOUNT_PERCENT= 0.3;
 
@@ -19,7 +23,7 @@ public class Receipt {
         this.totalPrice = totalPrice;
     }
 
-    public static Receipt createReceipt(Order order, boolean memberShipAnswer){
+    public static Receipt createReceipt(Order order, String memberShipAnswer){
         List<Product> boughtProducts = order.getBoughtProducts();
         Map<String, Integer> promotionProducts = order.getPromotionProducts();
 
@@ -42,7 +46,8 @@ public class Receipt {
 
         Integer memberShipDiscount = 0;
         Integer totalPriceBeforDiscount = generalPrice - promotionDiscount;
-        if (memberShipAnswer) {
+        Validator.validateAnswer(memberShipAnswer);
+        if (memberShipAnswer.equals(AnswerConstants.ANSWER_YES.getConstants())) {
             memberShipDiscount = (int) (totalPriceBeforDiscount * MEMBER_SHIP_DISCOUNT_PERCENT);
         }
 
