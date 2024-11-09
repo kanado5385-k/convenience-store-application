@@ -21,7 +21,7 @@ class InventoryTest {
             List.of(promotion)
         );
 
-        int result = inventory.buyingPromotionProduct("콜라", 3);
+        int result = inventory.buyPromotionProduct("콜라", 3);
         assertThat(result).isEqualTo(1);
         assertThat(productWithPromotion.getQuantity()).isEqualTo(7);
     }
@@ -37,7 +37,7 @@ class InventoryTest {
             List.of(promotion)
         );
 
-        int result = inventory.buyingPromotionProduct("콜라", 5);
+        int result = inventory.buyPromotionProduct("콜라", 5);
         assertThat(result).isEqualTo(0);
         assertThat(productWithPromotion.getQuantity()).isEqualTo(0);
         assertThat(productWithoutPromotion.getQuantity()).isEqualTo(7);
@@ -54,7 +54,7 @@ class InventoryTest {
             List.of(promotion)
         );
 
-        assertThatThrownBy(() -> inventory.buyingPromotionProduct("콜라", 5))
+        assertThatThrownBy(() -> inventory.buyPromotionProduct("콜라", 5))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage(ErrorMessage.LACK_OF_PRODUCT.getMessage());
     }
@@ -69,7 +69,7 @@ class InventoryTest {
             List.of(promotion)
         );
 
-        int result = inventory.buyingPromotionProduct("콜라", 1);
+        int result = inventory.buyPromotionProduct("콜라", 1);
         assertThat(result).isEqualTo(0);
         assertThat(productWithPromotion.getQuantity()).isEqualTo(9);
     }
@@ -87,7 +87,7 @@ class InventoryTest {
         String simulatedInput = "N\n";
         System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
 
-        int result = inventory.buyingPromotionProduct("콜라", 2);
+        int result = inventory.buyPromotionProduct("콜라", 2);
 
         assertThat(result).isEqualTo(0);
         assertThat(productWithPromotion.getQuantity()).isEqualTo(8);

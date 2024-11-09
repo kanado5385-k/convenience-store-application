@@ -88,7 +88,7 @@ public class Inventory {
 
 
     
-    public int buyingPromotionProduct(String productName, int purchaseQuantity) {
+    public int buyPromotionProduct(String productName, int purchaseQuantity) {
         Product productWithPromotion = getProductWithPromotion(productName);
         int promotionBoon = getPromotionBoon(productName);
         if(productWithPromotion.isSmallQuantityThanPromotionBoon(promotionBoon)) {
