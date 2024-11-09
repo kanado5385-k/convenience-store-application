@@ -138,6 +138,7 @@ public class Inventory {
             while (true) {
                 int currentQuantityOfProduct = productWithPromotion.firstReduceQuantityThanCheck(promotionBoon);
                 currentPurchaseQuantity =- promotionBoon;
+
                 if (currentQuantityOfProduct < 0){
                     boolean isValid = false;
                     String answer = "";
@@ -159,6 +160,13 @@ public class Inventory {
                     }
                     break;
                 }
+                if (currentPurchaseQuantity < 0){
+                    currentPurchaseQuantity =+ promotionBoon;
+                    int quantityOfPromotion = buyPromotionProduct(productName,currentPurchaseQuantity);
+                    result =+ quantityOfPromotion;
+                    break;
+                }
+
                 result =+ 1;
             }
             return result;
