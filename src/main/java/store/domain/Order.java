@@ -3,7 +3,6 @@ package store.domain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,8 +19,6 @@ public class Order {
     private static final int NO_SAME_NAME_IN_MAP = 0;
     private static final String DOES_NOT_MATTER = "null";
 
-
-
     private final Map<String, Integer> promotionProducts;
     private final List<Product> boughtProducts;
 
@@ -30,50 +27,78 @@ public class Order {
         this.boughtProducts = boughtProducts;
     }
 
-
-
     public static Order createOrder(String order, Inventory inventory) {
         Map<String, Integer> promotionProduct = new HashMap<>();
         List<Product> boughtProducts = new ArrayList<>();
-
-
         List<String> orderList = Splitter.splitStringOrder(order);
         for (String oneOrder : orderList) {
-            Validator.validateFormatOfOrder(oneOrder);
-            List<String> productAndQuantity = Splitter.splitOneOrder(oneOrder);
-
-            String productName = productAndQuantity.get(INDEX_OF_PRODUCT_NAME);
-            int purchaseQuantity = Parser.parseNumberToInt(productAndQuantity.get(INDEX_OF_PRODUCT_QUANTITY));
-            Validator.validateQuantityNumber(purchaseQuantity);
-
-            if (inventory.isProductWithPromotion(productName)) {
-                List<Integer> resultOfBuyingPromotionProduct = inventory.buyPromotionProduct(productName, purchaseQuantity);
-                int promotionalBenefits = resultOfBuyingPromotionProduct.get(INDEX_OF_BENEFIT);
-                if(resultOfBuyingPromotionProduct.get(INDEX_OF_REJECTED_PRODUCT) > MORE_THAN_ONE_REJECTED_PRODUCT){
-                    purchaseQuantity -= resultOfBuyingPromotionProduct.get(INDEX_OF_REJECTED_PRODUCT);
-                }
-                
-                promotionProduct.put(productName, 
-                    promotionProduct.getOrDefault(productName, NO_SAME_NAME_IN_MAP) + promotionalBenefits);
-            }
-            if (!inventory.isProductWithPromotion(productName)){
-                inventory.buyGeneralProduct(productName, purchaseQuantity);
-            }
-
-            int priceOfOneProductPacket = inventory.getPriceOfProductPacket(productName,purchaseQuantity);
-            Product boughtProduct = new Product(productName, priceOfOneProductPacket, purchaseQuantity, DOES_NOT_MATTER);
-            boughtProducts.add(boughtProduct);
-
+            processSingleOrder(oneOrder, inventory, promotionProduct, boughtProducts);
         }
 
         return new Order(promotionProduct, boughtProducts);
     }
 
-    public Map<String, Integer> getPromotionProducts(){
+    private static void processSingleOrder(String oneOrder, Inventory inventory, 
+                                       Map<String, Integer> promotionProduct, 
+                                       List<Product> boughtProducts) {
+        Validator.validateFormatOfOrder(oneOrder);
+        List<String> productAndQuantity = Splitter.splitOneOrder(oneOrder);
+        String productName = productAndQuantity.get(INDEX_OF_PRODUCT_NAME);
+        int purchaseQuantity = parseAndValidateQuantity(productAndQuantity.get(INDEX_OF_PRODUCT_QUANTITY));
+        processProductBasedOnPromotion(productName, purchaseQuantity, inventory, promotionProduct);
+        addBoughtProduct(boughtProducts, inventory, productName, purchaseQuantity);
+    }
+
+    private static void processProductBasedOnPromotion(String productName, int purchaseQuantity, 
+                                                   Inventory inventory, Map<String, Integer> promotionProduct) {
+        if (inventory.isProductWithPromotion(productName)) {
+            processPromotionProduct(productName, purchaseQuantity, inventory, promotionProduct);
+            return;
+        }
+        inventory.buyGeneralProduct(productName, purchaseQuantity);
+        }
+
+    private static int parseAndValidateQuantity(String quantity) {
+        int purchaseQuantity = Parser.parseNumberToInt(quantity);
+        Validator.validateQuantityNumber(purchaseQuantity);
+        return purchaseQuantity;
+    }
+
+    private static void processPromotionProduct(String productName, int purchaseQuantity, 
+                                            Inventory inventory, Map<String, Integer> promotionProduct) {
+        List<Integer> result = inventory.buyPromotionProduct(productName, purchaseQuantity);
+        int promotionalBenefits = result.get(INDEX_OF_BENEFIT);
+        int rejectedQuantity = result.get(INDEX_OF_REJECTED_PRODUCT);
+
+        purchaseQuantity = adjustPurchaseQuantity(purchaseQuantity, rejectedQuantity);
+        updatePromotionProductBenefits(productName, promotionalBenefits, promotionProduct);
+    }
+
+    private static int adjustPurchaseQuantity(int purchaseQuantity, int rejectedQuantity) {
+        if (rejectedQuantity > MORE_THAN_ONE_REJECTED_PRODUCT) {
+            return purchaseQuantity - rejectedQuantity;
+        }
+        return purchaseQuantity;
+    }
+
+    private static void updatePromotionProductBenefits(String productName, int promotionalBenefits, 
+                                                    Map<String, Integer> promotionProduct) {
+        promotionProduct.put(productName, 
+            promotionProduct.getOrDefault(productName, NO_SAME_NAME_IN_MAP) + promotionalBenefits);
+    }
+
+    private static void addBoughtProduct(List<Product> boughtProducts, Inventory inventory, 
+                                         String productName, int purchaseQuantity) {
+        int priceOfOneProductPacket = inventory.getPriceOfProductPacket(productName, purchaseQuantity);
+        Product boughtProduct = new Product(productName, priceOfOneProductPacket, purchaseQuantity, DOES_NOT_MATTER);
+        boughtProducts.add(boughtProduct);
+    }
+
+    public Map<String, Integer> getPromotionProducts() {
         return Collections.unmodifiableMap(this.promotionProducts);
     }
 
-    public List<Product> getBoughtProducts(){
+    public List<Product> getBoughtProducts() {
         return Collections.unmodifiableList(this.boughtProducts);
     }
 
