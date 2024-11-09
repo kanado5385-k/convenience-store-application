@@ -29,6 +29,14 @@ public class OutputView {
     private static final String MEMBERSHIP_DISCOUNT_LABEL = "멤버십할인";
     private static final String FINAL_PAYMENT_LABEL = "내실돈";
 
+    public void printWellcomeMessage(String wellcome) {
+        System.out.println(wellcome);
+    }
+
+    public void printProdocts(String products) {
+        System.out.println(products);
+    }
+
     public void printReseipt(ReseiptDTO reseiptDTO) {
         System.out.println(RECEIPT_HEADER);
         printProductList(reseiptDTO.getBoughtProducts());
