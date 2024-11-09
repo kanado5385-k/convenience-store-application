@@ -1,5 +1,6 @@
 package store.domain;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -65,6 +66,14 @@ public class Order {
         }
 
         return new Order(promotionProduct, boughtProducts);
+    }
+
+    public Map<String, Integer> getPromotionProducts(){
+        return Collections.unmodifiableMap(this.promotionProducts);
+    }
+
+    public List<Product> getBoughtProducts(){
+        return Collections.unmodifiableList(this.boughtProducts);
     }
 
 }
