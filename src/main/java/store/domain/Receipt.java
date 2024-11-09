@@ -19,7 +19,7 @@ public class Receipt {
         this.totalPrice = totalPrice;
     }
 
-    public Receipt createReceipt(Order order, boolean memberShipAnswer){
+    public static Receipt createReceipt(Order order, boolean memberShipAnswer){
         List<Product> boughtProducts = order.getBoughtProducts();
         Map<String, Integer> promotionProducts = order.getPromotionProducts();
 
