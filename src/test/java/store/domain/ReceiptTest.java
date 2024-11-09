@@ -20,7 +20,7 @@ public class ReceiptTest {
         String orderInput = "[콜라-3],[사이다-2]";
         Order order = Order.createOrder(orderInput, inventory);
 
-        Receipt receipt = Receipt.createReceipt(order, true);
+        Receipt receipt = Receipt.createReceipt(order, "Y");
 
         assertThat(receipt.getPromotionDiscount()).isEqualTo(0);
         assertThat(receipt.getMemeberSipDiscount()).isEqualTo(1800);
