@@ -1,6 +1,7 @@
 package store.view.output;
 
 import store.dto.ReseiptDTO;
+import store.enums.messages.IOMessage;
 import store.domain.Product;
 
 import java.util.List;
@@ -29,8 +30,8 @@ public class OutputView {
     private static final String MEMBERSHIP_DISCOUNT_LABEL = "멤버십할인";
     private static final String FINAL_PAYMENT_LABEL = "내실돈";
 
-    public void printWellcomeMessage(String wellcome) {
-        System.out.println(wellcome);
+    public void printWellcomeMessage() {
+        System.out.println(IOMessage.PRINT_WELLCOME_MESSAGE.getMessage());
     }
 
     public void printProdocts(String products) {
