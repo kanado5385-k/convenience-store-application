@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import store.enums.messages.ErrorMessage;
 import store.utilities.Parser;
 import store.utilities.Splitter;
 import store.utilities.Validator;
@@ -21,34 +20,38 @@ public class Order {
     }
 
 
-    /*
+
     public static Order createOrder(String order, Inventory inventory) {
         Map<String, Integer> promotionProduct = new HashMap<>();
         List<Product> boughtProducts = new LinkedList<>();
 
-        List<String> forCheckDublicatProduct = new ArrayList<>();
 
         List<String> orderList = Splitter.splitStringOrder(order);
         for (String oneOrder : orderList) {
             Validator.validateFormatOfOrder(oneOrder);
             List<String> productAndQuantity = Splitter.splirOneOrder(order);
 
-            String product = productAndQuantity.get(0);
-            int quantity = Parser.parseNumberToInt(productAndQuantity.get(1));
-            Validator.validateQuantityNumber(quantity);
+            String productName = productAndQuantity.get(0);
+            int purchaseQuantity = Parser.parseNumberToInt(productAndQuantity.get(1));
+            Validator.validateQuantityNumber(purchaseQuantity);
 
-            if (forCheckDublicatProduct.contains(product)) { // 순서 바꾸기
-                for (Product product1 : boughtProducts) {
-                    if (product1.isSameName(product)) {
-                        product1.addQuantity(quantity);
-                    }
-                }
+            if (inventory.isProductWithPromotion(productName)) {
+                int promotionalBenefits = inventory.buyPromotionProduct(productName, purchaseQuantity);
+            
+                promotionProduct.put(productName, 
+                    promotionProduct.getOrDefault(productName, 0) + promotionalBenefits);
+            }
+            if (!inventory.isProductWithPromotion(productName)){
+                inventory.buyGeneralProduct(productName, purchaseQuantity);
             }
 
-            if (inventory.isProductWithPromotion(product)) {
-            }
+            int priceOfOneProductPacket = inventory.getPriceOfProductPacket(productName,purchaseQuantity);
+            Product boughtProduct = new Product(productName, priceOfOneProductPacket, purchaseQuantity, "null");
+            boughtProducts.add(boughtProduct);
+
         }
+
+        return new Order(promotionProduct, boughtProducts);
     }
-    */
 
 }

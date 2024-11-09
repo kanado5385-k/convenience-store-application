@@ -230,4 +230,15 @@ public class Inventory {
                 .filter(product -> !product.hasPromotion())
                 .collect(Collectors.toList());
     }
+
+    public void buyGeneralProduct(String productName, int currentQuantity) {
+        Product productWithoutPromotion = getProductWithoutPromotion(productName);
+        validateSufficientQuantity(productWithoutPromotion, currentQuantity);
+        productWithoutPromotion.reduceQuantity(currentQuantity);
+    }
+
+    public int getPriceOfProductPacket(String productName, int quantity){
+        Product productWithoutPromotion = getProductWithoutPromotion(productName);
+        return productWithoutPromotion.getPriceOfOnePacket(quantity);
+    }
 }

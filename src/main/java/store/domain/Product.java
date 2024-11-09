@@ -67,8 +67,8 @@ public class Product {
         return this.nameOfPromotion;
     }
 
-    public Integer addPriceToTotal(Integer totalPrice) {
-        return totalPrice += this.price;
+    public Integer getPriceOfOnePacket(int quantity) {
+        return price * quantity;
     }
 
     public Integer getPromotionPrice(Integer quantityOfPromotionProduct) {
