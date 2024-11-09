@@ -137,9 +137,10 @@ public class Inventory {
             int result = 0;
             while (true) {
                 int currentQuantityOfProduct = productWithPromotion.firstReduceQuantityThanCheck(promotionBoon);
-                currentPurchaseQuantity =- promotionBoon;
-
-                if (currentQuantityOfProduct < 0){
+                currentPurchaseQuantity -= promotionBoon;
+            
+                if (currentQuantityOfProduct < 0) {
+                    currentPurchaseQuantity += promotionBoon;
                     boolean isValid = false;
                     String answer = "";
                     while (!isValid) {
@@ -151,23 +152,25 @@ public class Inventory {
                             System.out.println(e.getMessage());
                         }
                     }
-                    if(answer.equals(AnswerConstants.ANSWER_YES.getConstants())){
+                    if (answer.equals(AnswerConstants.ANSWER_YES.getConstants())) {
                         Product productWithoutPromotion = getProductWithoutPromotion(productName);
-                        if(productWithoutPromotion.isNotEnoughQuantityToBuy(currentPurchaseQuantity)) {
+                        if (productWithoutPromotion.isNotEnoughQuantityToBuy(Math.abs(currentQuantityOfProduct) + GET_ONE_FREE)) {
                             throw new IllegalArgumentException(ErrorMessage.LACK_OF_PRODUCT.getMessage());
                         }
-                        productWithoutPromotion.reduceQuantity(currentPurchaseQuantity);
+                        productWithoutPromotion.reduceQuantity(Math.abs(currentQuantityOfProduct) + GET_ONE_FREE);
                     }
                     break;
                 }
-                if (currentPurchaseQuantity < 0){
-                    currentPurchaseQuantity =+ promotionBoon;
-                    int quantityOfPromotion = buyPromotionProduct(productName,currentPurchaseQuantity);
-                    result =+ quantityOfPromotion;
+            
+                if (currentPurchaseQuantity < 0) {
+                    productWithPromotion.addQuantity(promotionBoon);
+                    currentPurchaseQuantity += promotionBoon;
+                    int quantityOfPromotion = buyPromotionProduct(productName, currentPurchaseQuantity);
+                    result += quantityOfPromotion;
                     break;
                 }
-
-                result =+ 1;
+            
+                result++;
             }
             return result;
         }
