@@ -132,7 +132,38 @@ public class Inventory {
             productWithPromotion.reduceQuantity(purchaseQuantity);
             return NO_ANY_PROMOTION_BOON;
         }
-        return 1; //for test
-
+        if(purchaseQuantity > promotionBoon){
+            int currentPurchaseQuantity = purchaseQuantity;
+            int result = 0;
+            while (true) {
+                int currentQuantityOfProduct = productWithPromotion.firstReduceQuantityThanCheck(promotionBoon);
+                currentPurchaseQuantity =- promotionBoon;
+                if (currentQuantityOfProduct < 0){
+                    boolean isValid = false;
+                    String answer = "";
+                    while (!isValid) {
+                        try {
+                            answer = InputViewOfPromotionIssue.readAnswerToLackOfQuantity(productName, currentPurchaseQuantity);
+                            Validator.validateAnswer(answer);
+                            isValid = true;
+                        } catch (IllegalArgumentException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                    if(answer.equals(AnswerConstants.ANSWER_YES.getConstants())){
+                        Product productWithoutPromotion = getProductWithoutPromotion(productName);
+                        if(productWithoutPromotion.isNotEnoughQuantityToBuy(currentPurchaseQuantity)) {
+                            throw new IllegalArgumentException(ErrorMessage.LACK_OF_PRODUCT.getMessage());
+                        }
+                        productWithoutPromotion.reduceQuantity(currentPurchaseQuantity);
+                    }
+                    break;
+                }
+                result =+ 1;
+            }
+            return result;
+        }
+        return 1;
     }
+
 }
