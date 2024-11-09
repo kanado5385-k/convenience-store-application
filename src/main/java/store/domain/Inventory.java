@@ -1,6 +1,7 @@
 package store.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -191,7 +192,7 @@ public class Inventory {
                                              int currentPurchaseQuantity, int result) {
     currentPurchaseQuantity += GET_ONE_FREE;
     int lackQuantity = handleLackOfQuantity(productName, currentQuantity, currentPurchaseQuantity);
-    return result + lackQuantity; // 부족한 수량 포함
+    return result + lackQuantity;
 }
 
     private int handleExcessQuantity(String productName, int currentPurchaseQuantity,
@@ -210,11 +211,11 @@ public class Inventory {
     private int processLackOfQuantityAnswer(String productName, int currentQuantity, String answer) {
         if (answer.equals(AnswerConstants.ANSWER_YES.getConstants())) {
             handleValidQuantityReduction(productName, currentQuantity);
-            return 0;  // 프로모션 상품 사용
+            return 0;
         } else if (answer.equals(AnswerConstants.ANSWER_NO.getConstants())) {
-            return currentQuantity;  // 프로모션을 적용하지 않은 수량 반환
+            return currentQuantity;
         }
-        return 0;  // 기본값
+        return 0;
     }
     
     private void handleValidQuantityReduction(String productName, int currentQuantity) {
@@ -255,8 +256,13 @@ public class Inventory {
         productWithoutPromotion.reduceQuantity(currentQuantity);
     }
 
-    public int getPriceOfProductPacket(String productName, int quantity){
+    public int getPriceOfProductPacket(String productName, int quantity) {
         Product productWithoutPromotion = getProductWithoutPromotion(productName);
         return productWithoutPromotion.getPriceOfOnePacket(quantity);
     }
+
+    public List<Product> getProducts() {
+        return Collections.unmodifiableList(this.products);
+    }
+
 }
