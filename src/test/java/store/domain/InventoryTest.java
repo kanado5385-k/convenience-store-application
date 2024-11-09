@@ -44,6 +44,7 @@ public class InventoryTest {
         assertFalse(result);
     }
 
+    /**
     @Test
     public void testCheckQuantityOfPromotionProduct_구매가능한수량() {
         Product product = new Product("Apple", 1000, 10, "Promo1");
@@ -55,7 +56,7 @@ public class InventoryTest {
         assertEquals(5, gap);
     }
 
-    /**
+    
     @Test
     public void testReduceQuantityOfPromotionProduct() {
         Product product = new Product("Apple", 1000, 10, "Promo1");

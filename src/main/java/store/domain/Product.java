@@ -17,7 +17,7 @@ public class Product {
     }
 
     public boolean isSameName(String name) {
-        return this.name == name;
+        return this.name.equals(name);
     }
 
     public boolean hasPromotion() {
@@ -44,7 +44,7 @@ public class Product {
     }
 
     public void addQuantity(int quantity) {
-        this.quantity =+ quantity;
+        this.quantity += quantity;
     }
 
     public String getName() {
