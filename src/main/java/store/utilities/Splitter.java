@@ -19,13 +19,14 @@ public class Splitter {
         return List.of(line.split(LINE_DELIMITER));
     }
 
-    public static List<String> splirOneOrder(String order) {
-        String product = splitProductAndQuantity(order.indexOf("["),order.indexOf("-"),order);
-        String quantity = splitProductAndQuantity(order.indexOf("-"),order.indexOf("]"),order);
+    public static List<String> splitOneOrder(String order) {
+        String product = splitProductAndQuantity(order.indexOf("[") + 1, order.indexOf("-"), order);
+        String quantity = splitProductAndQuantity(order.indexOf("-") + 1, order.indexOf("]"), order);
+        
         List<String> productAndQuantity = new ArrayList<>();
         productAndQuantity.add(product);
         productAndQuantity.add(quantity);
-
+    
         return productAndQuantity;
     }
 

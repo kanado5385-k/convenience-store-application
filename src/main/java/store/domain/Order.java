@@ -1,5 +1,6 @@
 package store.domain;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -33,13 +34,13 @@ public class Order {
 
     public static Order createOrder(String order, Inventory inventory) {
         Map<String, Integer> promotionProduct = new HashMap<>();
-        List<Product> boughtProducts = new LinkedList<>();
+        List<Product> boughtProducts = new ArrayList<>();
 
 
         List<String> orderList = Splitter.splitStringOrder(order);
         for (String oneOrder : orderList) {
             Validator.validateFormatOfOrder(oneOrder);
-            List<String> productAndQuantity = Splitter.splirOneOrder(order);
+            List<String> productAndQuantity = Splitter.splitOneOrder(oneOrder);
 
             String productName = productAndQuantity.get(INDEX_OF_PRODUCT_NAME);
             int purchaseQuantity = Parser.parseNumberToInt(productAndQuantity.get(INDEX_OF_PRODUCT_QUANTITY));
