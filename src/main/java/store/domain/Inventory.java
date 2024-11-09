@@ -88,7 +88,7 @@ public class Inventory {
 
 
     
-    public int buyingPromotionPriduct(String productName, int purchaseQuantity, InputViewOfPromotionIssue input) {
+    public int buyingPromotionPriduct(String productName, int purchaseQuantity) {
         Product productWithPromotion = getProductWithPromotion(productName);
         int promotionBoon = getPromotionBoon(productName);
         if(productWithPromotion.isSmallQuantityThanPromotionBoon(promotionBoon)) {
@@ -118,7 +118,7 @@ public class Inventory {
             String answer = "";
             while (!isValid) {
                 try {
-                    answer = input.readAnswerToOneMoreProduct(productName);
+                    answer = InputViewOfPromotionIssue.readAnswerToOneMoreProduct(productName);
                     Validator.validateAnswer(answer);
                     isValid = true;
                 } catch (IllegalArgumentException e) {
