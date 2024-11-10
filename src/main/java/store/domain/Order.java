@@ -17,7 +17,7 @@ public class Order {
     private static final int INDEX_OF_PRODUCT_QUANTITY = 1;
     private static final int MORE_THAN_ONE_REJECTED_PRODUCT = 0;
     private static final int NO_SAME_NAME_IN_MAP = 0;
-    private static final String DOES_NOT_MATTER = "null";
+    private static final String DOES_NOT_MATTER = null;
 
     private final Map<String, Integer> promotionProducts;
     private final List<Product> boughtProducts;

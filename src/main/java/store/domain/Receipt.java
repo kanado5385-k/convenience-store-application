@@ -47,6 +47,9 @@ public class Receipt {
         Validator.validateAnswer(memberShipAnswer);
         if (memberShipAnswer.equals(AnswerConstants.ANSWER_YES.getConstants())) {
             memberShipDiscount = (int) (totalPriceBeforDiscount * MEMBER_SHIP_DISCOUNT_PERCENT);
+            if (memberShipDiscount > 8000){
+                memberShipDiscount = 8000;
+            }
         }
 
         Integer totalPrice = generalPrice - promotionDiscount - memberShipDiscount;

@@ -9,8 +9,8 @@ import java.util.List;
 public class ReceiptTest {
     @Test
     void 멤버십할인_적용된_영수증_생성_테스트() {
-        Product cocaWithoutPromotion = new Product("콜라", 1000, 5, "null");
-        Product spriteWithoutPromotion = new Product("사이다", 1500, 2, "null");
+        Product cocaWithoutPromotion = new Product("콜라", 1000, 5, null);
+        Product spriteWithoutPromotion = new Product("사이다", 1500, 2, null);
  
         Inventory inventory = new Inventory(
             List.of(cocaWithoutPromotion,spriteWithoutPromotion),

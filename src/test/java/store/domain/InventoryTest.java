@@ -29,7 +29,7 @@ class InventoryTest {
     @Test
     void 프로모션_상품_구매_재고_부족_일반상품에서_재고차감() {
         Product productWithPromotion = new Product("콜라", 1000, 2, "탄산2+1");
-        Product productWithoutPromotion = new Product("콜라", 1000, 10, "null");
+        Product productWithoutPromotion = new Product("콜라", 1000, 10, null);
         Promotion promotion = new Promotion("탄산2+1", 2, "2023-01-01", "2025-01-01");
 
         Inventory inventory = new Inventory(
@@ -46,7 +46,7 @@ class InventoryTest {
     @Test
     void 프로모션_상품_및_일반_상품_재고_부족으로_예외() {
         Product productWithPromotion = new Product("콜라", 1000, 2, "탄산2+1");
-        Product productWithoutPromotion = new Product("콜라", 1000, 1, "null");
+        Product productWithoutPromotion = new Product("콜라", 1000, 1, null);
         Promotion promotion = new Promotion("탄산2+1", 2, "2023-01-01", "2025-01-01");
 
         Inventory inventory = new Inventory(
@@ -115,7 +115,7 @@ class InventoryTest {
     void 프로모션_상품_수량이_혜택수량_보다_많고_재고_상태가_충분하지_않을때_사용자_Y() {
 
         Product productWithPromotion = new Product("콜라", 1000, 7, "탄산2+1");
-        Product productWithoutPromotion = new Product("콜라", 1000, 10, "null");
+        Product productWithoutPromotion = new Product("콜라", 1000, 10, null);
         Promotion promotion = new Promotion("탄산2+1", 2, "2023-01-01", "2025-01-01");
         Inventory inventory = new Inventory(
             List.of(productWithPromotion, productWithoutPromotion),
