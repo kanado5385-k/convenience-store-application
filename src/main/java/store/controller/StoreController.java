@@ -27,10 +27,18 @@ public class StoreController {
     private InputView inputView;
     private OutputView outputView;
 
-    public StoreController() {
-        this.inputView = new InputView();
-        this.outputView = new OutputView();
-        this.buying = Buying.startBuying();
+    private DomainFactory domainFactory;
+    private ModelFactory modelFactory;
+    private ViewFactory viewFactory;
+
+    public StoreController(DomainFactory domainFactory, ModelFactory modelFactory, ViewFactory viewFactory) {
+        this.domainFactory = domainFactory;
+        this.modelFactory = modelFactory;
+        this.viewFactory = viewFactory;
+
+        this.inputView = viewFactory.createInputView();
+        this.outputView = viewFactory.createOutputView();
+        this.buying = domainFactory.createBuying();
     }
 
     public void startBuying() {
@@ -44,40 +52,35 @@ public class StoreController {
         outputView.printWelcomeMessage();
         List<Product> products = loadProducts();
         List<Promotion> promotions = loadPromotions();
-        PromotionPolicy policy = createPromotionPolicy(products,promotions);
-        Inventory inventory = createInventory(products, policy);
+        PromotionPolicy policy = domainFactory.createPromotionPolicy(products, promotions);
+        Inventory inventory = domainFactory.createInventory(products, policy);
         Order order = createOrder(inventory);
         printReceipt(order, createReceipt(order));
         saveInventory(inventory);
     }
 
     private List<Product> loadProducts() {
-        ProductFileReader productFileReader = new ProductFileReader();
+        ProductFileReader productFileReader = modelFactory.createProductFileReader();
         outputView.printProducts(productFileReader.showProductsToUser());
 
-        return new ProductFactory().createProducts(productFileReader.readFileAsString());
+        String productData = productFileReader.readFileAsString();
+        ProductFactory productFactory = domainFactory.createProductFactory();
+        return productFactory.createProducts(productData);
     }
 
     private List<Promotion> loadPromotions() {
-        PromotionFileReader promotionFileReader = new PromotionFileReader();
+        PromotionFileReader promotionFileReader = modelFactory.createPromotionFileReader();
 
-        return new PromotionFactory().createPromotions(promotionFileReader.readFileAsString());
+        String promotionData = promotionFileReader.readFileAsString();
+        PromotionFactory promotionFactory = domainFactory.createPromotionFactory();
+        return promotionFactory.createPromotions(promotionData);
     }
-
-    private PromotionPolicy createPromotionPolicy(List<Product> products, List<Promotion> promotions) {
-        return new PromotionPolicy(products, promotions);
-    }
-
-    private Inventory createInventory(List<Product> products, PromotionPolicy policy) {
-        return new Inventory(products, policy);
-    }
-
 
     private Order createOrder(Inventory inventory) {
         while (true) {
             try {
                 String stringOrder = inputView.readOrder();
-                return Order.createOrder(stringOrder, inventory);
+                return domainFactory.createOrder(stringOrder, inventory);
             } catch (IllegalArgumentException e) {
                 ExceptionOutputView.printErrorMessage(e.getMessage());
             }
@@ -87,8 +90,8 @@ public class StoreController {
     private Receipt createReceipt(Order order) {
         while (true) {
             try {
-                String answerToMemberShip = inputView.readMemberShipOrNot();
-                return Receipt.createReceipt(order, answerToMemberShip);
+                String answerToMembership = inputView.readMemberShipOrNot();
+                return domainFactory.createReceipt(order, answerToMembership);
             } catch (IllegalArgumentException e) {
                 ExceptionOutputView.printErrorMessage(e.getMessage());
             }
@@ -101,7 +104,8 @@ public class StoreController {
     }
 
     private void saveInventory(Inventory inventory) {
-        new ProductFileWriter().writeProductsToFile(inventory.getProducts());
+        ProductFileWriter productFileWriter = modelFactory.createProductFileWriter();
+        productFileWriter.writeProductsToFile(inventory.getProducts());
     }
 
     private void handleBuyingEnd() {
