@@ -27,24 +27,25 @@ public class PromotionProcessor {
 
     public List<Integer> buyPromotionProduct(String productName, int purchaseQuantity) {
         List<Integer> resultList = new ArrayList<>();
-
-        Optional<Product> productOpt = inventoryManager.findProductWithPromotion(productName);
-        Product productWithPromotion = productOpt.get();
+        Product productWithPromotion = getProductWithPromotion(productName);
         int promotionBoon = getPromotionBoon(productWithPromotion);
-
-        int result;
+        int result = processPurchase(productName, purchaseQuantity, productWithPromotion, promotionBoon);
         int lackQuantity = NO_ANY_PRODUCT;
-
-        if (productWithPromotion.isSmallQuantityThanPromotionBoon(promotionBoon)) {
-            result = handleSmallQuantityCase(productName, purchaseQuantity, productWithPromotion);
-        } else {
-            result = processPurchaseQuantity(productName, purchaseQuantity, productWithPromotion, promotionBoon);
-        }
-
         resultList.add(result);
         resultList.add(lackQuantity);
-
         return resultList;
+    }
+
+    private Product getProductWithPromotion(String productName) {
+        Optional<Product> productOpt = inventoryManager.findProductWithPromotion(productName);
+        return productOpt.get();
+    }
+
+    private int processPurchase(String productName, int purchaseQuantity, Product productWithPromotion, int promotionBoon) {
+        if (productWithPromotion.isSmallQuantityThanPromotionBoon(promotionBoon)) {
+            return handleSmallQuantityCase(productName, purchaseQuantity, productWithPromotion);
+        }
+        return processPurchaseQuantity(productName, purchaseQuantity, productWithPromotion, promotionBoon);
     }
 
     private int getPromotionBoon(Product product) {
@@ -74,16 +75,25 @@ public class PromotionProcessor {
 
     private int processPurchaseQuantity(String productName, int purchaseQuantity,
                                         Product productWithPromotion, int promotionBoon) {
-        if (purchaseQuantity == promotionBoon) {
-            return handleEqualPromotionBoonCase(purchaseQuantity, productWithPromotion);
-        }
-        if (purchaseQuantity < promotionBoon - GET_ONE_FREE) {
-            return handleLessThanPromotionBoonMinusOneCase(purchaseQuantity, productWithPromotion);
-        }
-        if (purchaseQuantity == promotionBoon - GET_ONE_FREE) {
-            return handleEqualPromotionBoonMinusOneCase(productName, purchaseQuantity, productWithPromotion);
+        if (isSpecialCase(purchaseQuantity, promotionBoon)) {
+            return handleSpecialCase(productName, purchaseQuantity, productWithPromotion, promotionBoon);
         }
         return handleGreaterThanPromotionBoonCase(productName, purchaseQuantity, productWithPromotion, promotionBoon);
+    }
+
+    private boolean isSpecialCase(int purchaseQuantity, int promotionBoon) {
+        return purchaseQuantity == promotionBoon ||
+            purchaseQuantity < promotionBoon - GET_ONE_FREE ||
+            purchaseQuantity == promotionBoon - GET_ONE_FREE;
+    }
+
+    private int handleSpecialCase(String productName, int purchaseQuantity,
+                                Product productWithPromotion, int promotionBoon) {
+        if (purchaseQuantity == promotionBoon)
+            return handleEqualPromotionBoonCase(purchaseQuantity, productWithPromotion);
+        if (purchaseQuantity < promotionBoon - GET_ONE_FREE)
+            return handleLessThanPromotionBoonMinusOneCase(purchaseQuantity, productWithPromotion);
+        return handleEqualPromotionBoonMinusOneCase(productName, purchaseQuantity, productWithPromotion);
     }
 
     private int handleEqualPromotionBoonCase(int purchaseQuantity, Product productWithPromotion) {
@@ -108,21 +118,34 @@ public class PromotionProcessor {
     }
 
     private int handleGreaterThanPromotionBoonCase(String productName, int purchaseQuantity,
-                                                   Product productWithPromotion, int promotionBoon) {
+                                               Product productWithPromotion, int promotionBoon) {
         int result = NO_ANY_PROMOTION_BOON;
         int currentPurchaseQuantity = purchaseQuantity;
+        result += calculatePromotionBoons(productName, productWithPromotion, promotionBoon, currentPurchaseQuantity);
+    
+        return result;
+    }
 
+    private int calculatePromotionBoons(String productName, Product productWithPromotion, 
+                                        int promotionBoon, int currentPurchaseQuantity) {
+        int result = NO_ANY_PRODUCT;
         while (currentPurchaseQuantity > NO_ANY_PRODUCT) {
-            int currentQuantity = productWithPromotion.firstReduceQuantityThanCheck(promotionBoon);
-            currentPurchaseQuantity -= promotionBoon;
-
-            if (currentQuantity < NO_ANY_PRODUCT) {
-                return handleInsufficientQuantityInLoop(productName, currentQuantity, currentPurchaseQuantity, result);
-            }
+            currentPurchaseQuantity = processSinglePromotionCycle(productName, productWithPromotion, 
+                                                                promotionBoon, currentPurchaseQuantity, result);
             result += ONE_PROMOTION_BOON;
         }
-
         return result;
+    }
+
+    private int processSinglePromotionCycle(String productName, Product productWithPromotion, 
+                                            int promotionBoon, int currentPurchaseQuantity, int result) {
+        int currentQuantity = productWithPromotion.firstReduceQuantityThanCheck(promotionBoon);
+        currentPurchaseQuantity -= promotionBoon; 
+        if (currentQuantity < NO_ANY_PRODUCT) {
+            return handleInsufficientQuantityInLoop(productName, currentQuantity, 
+                                                    currentPurchaseQuantity, result);
+        }   
+        return currentPurchaseQuantity;
     }
 
     private int handleInsufficientQuantityInLoop(String productName, int currentQuantity,
@@ -141,7 +164,8 @@ public class PromotionProcessor {
         if (answer.equals(AnswerConstants.ANSWER_YES.getConstants())) {
             handleValidQuantityReduction(productName, currentQuantity);
             return NO_ANY_PRODUCT;
-        } else if (answer.equals(AnswerConstants.ANSWER_NO.getConstants())) {
+        }
+        if (answer.equals(AnswerConstants.ANSWER_NO.getConstants())) {
             return currentQuantity;
         }
         return NO_ANY_PRODUCT;
