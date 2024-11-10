@@ -192,7 +192,7 @@ public class PromotionProcessor {
     private void handleValidQuantityReduction(String productName, int currentQuantity) {
         Optional<Product> productOpt = inventoryManager.findProductWithoutPromotion(productName);
         Product productWithoutPromotion = productOpt.get();
-        int requiredQuantity = Math.abs(currentQuantity);
+        int requiredQuantity = (Math.abs(currentQuantity))+1;
         inventoryManager.reduceProductQuantity(productWithoutPromotion, requiredQuantity);
     }
 }
