@@ -4,24 +4,32 @@ import store.utilities.Validator;
 import store.view.input.InputViewOfPromotionIssue;
 
 public class UserInteractionHandler {
+    private String readAndValidateAnswerForOneMoreProduct(String productName) {
+        String answer = InputViewOfPromotionIssue.readAnswerToOneMoreProduct(productName);
+        Validator.validateAnswer(answer);
+        return answer;
+    }
+    
     public String getValidatedAnswerForOneMoreProduct(String productName) {
         while (true) {
             try {
-                String answer = InputViewOfPromotionIssue.readAnswerToOneMoreProduct(productName);
-                Validator.validateAnswer(answer);
-                return answer;
+                return readAndValidateAnswerForOneMoreProduct(productName);
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
         }
     }
 
+    private String readAndValidateAnswerToLackOfQuantity(String productName, int currentPurchaseQuantity) {
+        String answer = InputViewOfPromotionIssue.readAnswerToLackOfQuantity(productName, currentPurchaseQuantity);
+        Validator.validateAnswer(answer);
+        return answer;
+    }
+    
     public String getValidatedAnswerToLackOfQuantity(String productName, int currentPurchaseQuantity) {
         while (true) {
             try {
-                String answer = InputViewOfPromotionIssue.readAnswerToLackOfQuantity(productName, currentPurchaseQuantity);
-                Validator.validateAnswer(answer);
-                return answer;
+                return readAndValidateAnswerToLackOfQuantity(productName, currentPurchaseQuantity);
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
