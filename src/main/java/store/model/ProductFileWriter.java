@@ -3,7 +3,9 @@ package store.model;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import store.domain.Product;
 import store.enums.constants.FilePathConstants;
@@ -13,7 +15,6 @@ public class ProductFileWriter {
     private static final String HEADER = "name,price,quantity,promotion";
     private static final int INDEX_OF_HEADER = 0;
     private static final String DELIMITER = ",";
-
 
     private final String filePath = FilePathConstants.PRODUCT_FILE_PATH.getConstants();
 
@@ -30,7 +31,7 @@ public class ProductFileWriter {
     private List<String> formatProducts(List<Product> products) {
         return products.stream()
             .map(this::formatProduct)
-            .toList();
+            .collect(Collectors.toCollection(ArrayList::new)); // 가변 리스트 생성
     }
 
     private String formatProduct(Product product) {
