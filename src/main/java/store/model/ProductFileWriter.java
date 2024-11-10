@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import store.domain.Product;
+import store.domain.inventory.Product;
 import store.enums.constants.FilePathConstants;
 import store.enums.messages.ErrorMessage;
 

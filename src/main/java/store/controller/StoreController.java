@@ -5,6 +5,8 @@ import java.util.List;
 import store.domain.Buying;
 import store.domain.Receipt;
 import store.domain.inventory.Inventory;
+import store.domain.inventory.Product;
+import store.domain.promotion.Promotion;
 import store.domain.promotion.PromotionPolicy;
 import store.dto.ReceiptDTO;
 import store.enums.constants.AnswerConstants;
@@ -22,8 +24,6 @@ import store.view.input.InputView;
 import store.view.output.ExceptionOutputView;
 import store.view.output.OutputView;
 import store.domain.Order;
-import store.domain.Product;
-import store.domain.Promotion;
 
 public class StoreController {
     private Buying buying;

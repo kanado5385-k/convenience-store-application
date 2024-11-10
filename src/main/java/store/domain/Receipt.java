@@ -3,6 +3,7 @@ package store.domain;
 import java.util.List;
 import java.util.Map;
 
+import store.domain.inventory.Product;
 import store.enums.constants.AnswerConstants;
 import store.utilities.Validator;
 

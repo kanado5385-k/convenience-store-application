@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import store.domain.inventory.Inventory;
+import store.domain.inventory.Product;
 import store.utilities.Parser;
 import store.utilities.Splitter;
 import store.utilities.Validator;

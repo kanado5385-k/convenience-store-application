@@ -3,6 +3,8 @@ package store.domain;
 import org.junit.jupiter.api.Test;
 
 import store.domain.inventory.Inventory;
+import store.domain.inventory.Product;
+import store.domain.promotion.Promotion;
 import store.domain.promotion.PromotionPolicy;
 import store.enums.messages.ErrorMessage;
 

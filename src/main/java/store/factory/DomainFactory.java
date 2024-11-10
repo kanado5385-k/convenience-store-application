@@ -4,10 +4,10 @@ import java.util.List;
 
 import store.domain.Buying;
 import store.domain.Order;
-import store.domain.Product;
-import store.domain.Promotion;
 import store.domain.Receipt;
 import store.domain.inventory.Inventory;
+import store.domain.inventory.Product;
+import store.domain.promotion.Promotion;
 import store.domain.promotion.PromotionPolicy;
 
 public class DomainFactory {

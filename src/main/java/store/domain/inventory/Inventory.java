@@ -1,6 +1,5 @@
 package store.domain.inventory;
 
-import store.domain.Product;
 import store.domain.promotion.PromotionPolicy;
 import store.enums.messages.ErrorMessage;
 

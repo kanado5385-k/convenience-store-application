@@ -1,8 +1,7 @@
 package store.domain.promotion;
 
-import store.domain.Product;
-import store.domain.Promotion;
 import store.domain.inventory.InventoryManager;
+import store.domain.inventory.Product;
 import store.enums.constants.AnswerConstants;
 
 import java.util.HashMap;

@@ -1,8 +1,8 @@
 package store.view.output;
 
+import store.domain.inventory.Product;
 import store.dto.ReceiptDTO;
 import store.enums.messages.IOMessage;
-import store.domain.Product;
 
 import java.util.List;
 import java.util.Map;

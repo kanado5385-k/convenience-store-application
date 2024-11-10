@@ -3,6 +3,8 @@ package store.domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import store.domain.promotion.Promotion;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PromotionTest {

@@ -1,7 +1,6 @@
 package store.domain.promotion;
 
-import store.domain.Product;
-import store.domain.Promotion;
+import store.domain.inventory.Product;
 import store.enums.messages.ErrorMessage;
 
 import java.util.List;

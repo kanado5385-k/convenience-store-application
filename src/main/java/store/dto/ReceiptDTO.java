@@ -1,9 +1,9 @@
 package store.dto;
 
-import store.domain.Product;
-
 import java.util.List;
 import java.util.Map;
+
+import store.domain.inventory.Product;
 
 public class ReceiptDTO {
     private Map<String, Integer> promotionProducts; 

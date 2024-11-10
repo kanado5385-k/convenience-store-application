@@ -1,6 +1,6 @@
 package store.factory;
 
-import store.domain.Product;
+import store.domain.inventory.Product;
 import store.utilities.Parser;
 import store.utilities.Splitter;
 

@@ -1,4 +1,4 @@
-package store.domain;
+package store.domain.inventory;
 
 public class Product {
     private static final int NO_ANY_PRODUCT = 0;

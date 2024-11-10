@@ -1,7 +1,6 @@
 package store.domain.inventory;
 
 import store.enums.messages.ErrorMessage;
-import store.domain.Product;
 
 import java.util.List;
 import java.util.Optional;
