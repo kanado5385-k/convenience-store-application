@@ -5,7 +5,9 @@ import store.domain.promotion.PromotionPolicy;
 import store.enums.messages.ErrorMessage;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class Inventory {
@@ -21,7 +23,7 @@ public class Inventory {
         return promotionPolicy.isProductWithPromotion(productName);
     }
 
-    public List<Integer> buyPromotionProduct(String productName, int purchaseQuantity) {
+    public Map<String, Integer> buyPromotionProduct(String productName, int purchaseQuantity) {   
         return promotionPolicy.buyPromotionProduct(productName, purchaseQuantity);
     }
 

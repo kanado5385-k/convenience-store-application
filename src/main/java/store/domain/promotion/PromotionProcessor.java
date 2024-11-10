@@ -5,8 +5,9 @@ import store.domain.Promotion;
 import store.domain.inventory.InventoryManager;
 import store.enums.constants.AnswerConstants;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class PromotionProcessor {
@@ -18,22 +19,38 @@ public class PromotionProcessor {
     private final InventoryManager inventoryManager;
     private final UserInteractionHandler userInteractionHandler;
     private final List<Promotion> promotions;
+    private final Map<String, Integer> promotionProducts;
 
     public PromotionProcessor(InventoryManager inventoryManager, UserInteractionHandler userInteractionHandler, List<Promotion> promotions) {
         this.inventoryManager = inventoryManager;
         this.userInteractionHandler = userInteractionHandler;
         this.promotions = promotions;
+        this.promotionProducts = new HashMap<>(Map.of(
+        "benefit", 0,
+        "adjusted", 0,
+        "added", 0
+    ));
     }
 
-    public List<Integer> buyPromotionProduct(String productName, int purchaseQuantity) {
-        List<Integer> resultList = new ArrayList<>();
+    private void incrementBenefit(int value) {
+        promotionProducts.put("benefit", promotionProducts.get("benefit") + value);
+    }
+
+    private void incrementAdjusted(int value) {
+        promotionProducts.put("adjusted", promotionProducts.get("adjusted") + value);
+    }
+
+    private void incrementAdded(int value) {
+        promotionProducts.put("added", promotionProducts.get("added") + value);
+    }
+
+    public Map<String, Integer> buyPromotionProduct(String productName, int purchaseQuantity) {
         Product productWithPromotion = getProductWithPromotion(productName);
         int promotionBoon = getPromotionBoon(productWithPromotion);
         int result = processPurchase(productName, purchaseQuantity, productWithPromotion, promotionBoon);
-        int lackQuantity = NO_ANY_PRODUCT;
-        resultList.add(result);
-        resultList.add(lackQuantity);
-        return resultList;
+        incrementBenefit(result);
+        //System.out.println(promotionProducts.get("added"));
+        return this.promotionProducts;
     }
 
     private Product getProductWithPromotion(String productName) {
@@ -111,6 +128,8 @@ public class PromotionProcessor {
         String answer = userInteractionHandler.getValidatedAnswerForOneMoreProduct(productName);
         if (answer.equals(AnswerConstants.ANSWER_YES.getConstants())) {
             productWithPromotion.reduceQuantity(purchaseQuantity + ONE_PROMOTION_BOON);
+            incrementAdded(ONE_PROMOTION_BOON);
+            //System.out.println(promotionProducts.get("added"));
             return ONE_PROMOTION_BOON;
         }
         productWithPromotion.reduceQuantity(purchaseQuantity);
@@ -166,6 +185,7 @@ public class PromotionProcessor {
             return NO_ANY_PRODUCT;
         }
         if (answer.equals(AnswerConstants.ANSWER_NO.getConstants())) {
+            incrementAdjusted(currentQuantity);
             return currentQuantity;
         }
         return NO_ANY_PRODUCT;

@@ -5,6 +5,7 @@ import store.domain.Promotion;
 import store.domain.inventory.InventoryManager;
 
 import java.util.List;
+import java.util.Map;
 
 public class PromotionPolicy {
     private final PromotionValidator promotionValidator;
@@ -22,7 +23,7 @@ public class PromotionPolicy {
         return promotionValidator.isProductWithPromotion(productName);
     }
 
-    public List<Integer> buyPromotionProduct(String productName, int purchaseQuantity) {
+    public Map<String, Integer> buyPromotionProduct(String productName, int purchaseQuantity) {
         return promotionProcessor.buyPromotionProduct(productName, purchaseQuantity);
     }
 }
