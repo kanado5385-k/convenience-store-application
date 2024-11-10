@@ -1,9 +1,12 @@
 package store;
 
+import store.config.AppConfig;
 import store.controller.StoreController;
 
 public class Application {
     public static void main(String[] args) {
-        new  StoreController().startBuying();
+        AppConfig appConfig = new AppConfig();
+        StoreController storeController = appConfig.storeController();
+        storeController.startBuying();
     }
 }
