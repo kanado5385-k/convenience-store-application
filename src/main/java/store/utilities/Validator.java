@@ -5,6 +5,9 @@ import store.enums.messages.ErrorMessage;
 
 public class Validator {
     private static final int MINIMUM_AMOUNT = 0;
+    private static final String START = "[";
+    private static final String SEPARATOR = "-";
+    private static final String END = "]";
 
     public static void validateFormatOfOrder(String order) {
         validateStartsWithBracket(order);
@@ -13,19 +16,19 @@ public class Validator {
     }
     
     private static void validateStartsWithBracket(String order) {
-        if (!order.startsWith("[")) {
+        if (!order.startsWith(START)) {
             throw new IllegalArgumentException(ErrorMessage.WRONG_FORMAT_OF_ORDER.getMessage());
         }
     }
     
     private static void validateEndsWithBracket(String order) {
-        if (!order.endsWith("]")) {
+        if (!order.endsWith(END)) {
             throw new IllegalArgumentException(ErrorMessage.WRONG_FORMAT_OF_ORDER.getMessage());
         }
     }
     
     private static void validateContainsHyphen(String order) {
-        if (!order.contains("-")) {
+        if (!order.contains(SEPARATOR)) {
             throw new IllegalArgumentException(ErrorMessage.WRONG_FORMAT_OF_ORDER.getMessage());
         }
     }

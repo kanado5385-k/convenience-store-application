@@ -4,27 +4,26 @@ import camp.nextstep.edu.missionutils.Console;
 import store.enums.messages.IOMessage;
 
 public class InputView {
-    public String readOrder() {
-        System.out.println(String.format(IOMessage.INPUT_ORDER.getMessage()));
-        String answer = Console.readLine();
-        System.out.println(System.lineSeparator());
+    private static final String SPACE = " ";
+    private static final String EMPTY = "";
 
-        return answer.replace(" ", "");
+    public String readOrder() {
+        return readInput(IOMessage.INPUT_ORDER.getMessage());
     }
 
     public String readMemberShipOrNot() {
-        System.out.println(String.format(IOMessage.INPUT_MEMBER_SHIP.getMessage()));
-        String answer = Console.readLine();
-        System.out.println(System.lineSeparator());
-
-        return answer.replace(" ", "");
+        return readInput(IOMessage.INPUT_MEMBER_SHIP.getMessage());
     }
 
     public String readAdditionalOrderOrNot() {
-        System.out.println(String.format(IOMessage.INPUT_ADDITIONAL_ORDER.getMessage()));
+        return readInput(IOMessage.INPUT_ADDITIONAL_ORDER.getMessage());
+    }
+
+    private String readInput(String message) {
+        System.out.println(String.format(message));
         String answer = Console.readLine();
         System.out.println(System.lineSeparator());
-        
-        return answer.replace(" ", "");
+
+        return answer.replace(SPACE, EMPTY);
     }
 }
