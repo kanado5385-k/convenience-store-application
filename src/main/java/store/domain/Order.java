@@ -32,17 +32,22 @@ public class Order {
         Map<String, Integer> promotionProduct = new HashMap<>();
         List<Product> boughtProducts = new ArrayList<>();
         List<String> orderList = Splitter.splitStringOrder(order);
+        validateFormatOfOrder(orderList);
         for (String oneOrder : orderList) {
             processSingleOrder(oneOrder, inventory, promotionProduct, boughtProducts);
         }
-
         return new Order(promotionProduct, boughtProducts);
+    }
+
+    private static void validateFormatOfOrder(List<String> orderList) {
+        for (String oneOrder : orderList) {
+            Validator.validateFormatOfOrder(oneOrder);
+        }
     }
 
     private static void processSingleOrder(String oneOrder, Inventory inventory, 
                                        Map<String, Integer> promotionProduct, 
                                        List<Product> boughtProducts) {
-        Validator.validateFormatOfOrder(oneOrder);
         List<String> productAndQuantity = Splitter.splitOneOrder(oneOrder);
         String productName = productAndQuantity.get(INDEX_OF_PRODUCT_NAME);
         int purchaseQuantity = parseAndValidateQuantity(productAndQuantity.get(INDEX_OF_PRODUCT_QUANTITY));

@@ -4,7 +4,6 @@ import store.domain.Promotion;
 import store.utilities.Parser;
 import store.utilities.Splitter;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
