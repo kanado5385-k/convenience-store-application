@@ -3,8 +3,9 @@ package store.controller;
 import java.util.List;
 
 import store.domain.Buying;
-import store.domain.Inventory;
 import store.domain.Receipt;
+import store.domain.inventory.Inventory;
+import store.domain.promotion.PromotionPolicy;
 import store.dto.ReceiptDTO;
 import store.enums.constants.AnswerConstants;
 import store.model.ProductFileReader;
@@ -40,22 +41,36 @@ public class StoreController {
 
     private void startOnePurchase() {
         outputView.printWelcomeMessage();
-        Inventory inventory = loadInventory();
+        List<Product> products = loadProducts();
+        List<Promotion> promotions = loadPromotions();
+        PromotionPolicy policy = createPromotionPolicy(products,promotions);
+        Inventory inventory = createInventory(products, policy);
         Order order = createOrder(inventory);
-        Receipt receipt = createReceipt(order);
-        printReceipt(order, receipt);
+        printReceipt(order, createReceipt(order));
         saveInventory(inventory);
     }
 
-    private Inventory loadInventory() {
+    private List<Product> loadProducts() {
         ProductFileReader productFileReader = new ProductFileReader();
-        PromotionFileReader promotionFileReader = new PromotionFileReader();
         outputView.printProducts(productFileReader.showProductsToUser());
-        List<Product> products = new ProductFactory().createProducts(productFileReader.readFileAsString());
-        List<Promotion> promotions = new PromotionFactory().createPromotions(promotionFileReader.readFileAsString());
 
-        return new Inventory(products, promotions);
+        return new ProductFactory().createProducts(productFileReader.readFileAsString());
     }
+
+    private List<Promotion> loadPromotions() {
+        PromotionFileReader promotionFileReader = new PromotionFileReader();
+
+        return new PromotionFactory().createPromotions(promotionFileReader.readFileAsString());
+    }
+
+    private PromotionPolicy createPromotionPolicy(List<Product> products, List<Promotion> promotions){
+        return new PromotionPolicy(products, promotions);
+    }
+
+    private Inventory createInventory(List<Product> products, PromotionPolicy policy){
+        return new Inventory(products, policy);
+    }
+
 
     private Order createOrder(Inventory inventory) {
         while (true) {

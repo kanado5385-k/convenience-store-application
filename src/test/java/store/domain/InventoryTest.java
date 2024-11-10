@@ -1,6 +1,8 @@
 package store.domain;
 
 import org.junit.jupiter.api.Test;
+
+import store.domain.inventory.Inventory;
 import store.enums.messages.ErrorMessage;
 
 import java.io.ByteArrayInputStream;

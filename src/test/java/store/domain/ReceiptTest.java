@@ -2,6 +2,9 @@ package store.domain;
 
 
 import org.junit.jupiter.api.Test;
+
+import store.domain.inventory.Inventory;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
