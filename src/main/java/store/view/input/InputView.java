@@ -7,6 +7,7 @@ public class InputView {
     public String readOrder() {
         System.out.println(String.format(IOMessage.INPUT_ORDER.getMessage()));
         String answer = Console.readLine();
+        System.out.println(System.lineSeparator());
 
         return answer.replace(" ", "");
     }
@@ -14,6 +15,7 @@ public class InputView {
     public String readMemberShipOrNot() {
         System.out.println(String.format(IOMessage.INPUT_MEMBER_SHIP.getMessage()));
         String answer = Console.readLine();
+        System.out.println(System.lineSeparator());
 
         return answer.replace(" ", "");
     }
@@ -21,7 +23,8 @@ public class InputView {
     public String readAdditionalOrderOrNot() {
         System.out.println(String.format(IOMessage.INPUT_ADDITIONAL_ORDER.getMessage()));
         String answer = Console.readLine();
-
+        System.out.println(System.lineSeparator());
+        
         return answer.replace(" ", "");
     }
 }
