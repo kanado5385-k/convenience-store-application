@@ -27,7 +27,7 @@ class ReceiptTest {
         Receipt receipt = Receipt.createReceipt(order, "Y");
 
         assertThat(receipt.getPromotionDiscount()).isEqualTo(0);
-        assertThat(receipt.getMemeberSipDiscount()).isEqualTo(1800);
+        assertThat(receipt.getMemberShipDiscount()).isEqualTo(1800);
         assertThat(receipt.getGeneralPrice()).isEqualTo(6000);
         assertThat(receipt.getTotalPrice()).isEqualTo(4200);
     }
@@ -47,7 +47,7 @@ class ReceiptTest {
         Receipt receipt = Receipt.createReceipt(order, "N");
 
         assertThat(receipt.getPromotionDiscount()).isEqualTo(0);
-        assertThat(receipt.getMemeberSipDiscount()).isEqualTo(0);
+        assertThat(receipt.getMemberShipDiscount()).isEqualTo(0);
         assertThat(receipt.getGeneralPrice()).isEqualTo(6000);
         assertThat(receipt.getTotalPrice()).isEqualTo(6000);
     }

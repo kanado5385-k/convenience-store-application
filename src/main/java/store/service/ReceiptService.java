@@ -10,7 +10,7 @@ public class ReceiptService {
         return new ReceiptDTO(
             order.getPromotionProducts(), 
             order.getBoughtProducts(), 
-            receipt.getMemeberSipDiscount(), 
+            receipt.getMemberShipDiscount(), 
             receipt.getPromotionDiscount(), 
             receipt.getGeneralPrice(), 
             receipt.getTotalPrice()

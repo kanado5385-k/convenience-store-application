@@ -8,7 +8,10 @@ import store.utilities.Validator;
 
 
 public class Receipt {
-    private static final double MEMBER_SHIP_DISCOUNT_PERCENT= 0.3;
+    private static final double MEMBER_SHIP_DISCOUNT_PERCENT = 0.3;
+    private static final int MAX_MEMBERSHIP_DISCOUNT = 8000;
+    private static final int NO_DISCOUNT = 0;
+    private static final int INITIAL_VALUE = 0;
 
     private Integer memberShipDiscount;
     private Integer promotionDiscount;
@@ -23,40 +26,68 @@ public class Receipt {
         this.totalPrice = totalPrice;
     }
 
-    public static Receipt createReceipt(Order order, String memberShipAnswer){
+    public static Receipt createReceipt(Order order, String memberShipAnswer) {
         List<Product> boughtProducts = order.getBoughtProducts();
         Map<String, Integer> promotionProducts = order.getPromotionProducts();
-
-        Integer generalPrice = 0; //generalPrice
-        for(Product oneBoughtproduct : boughtProducts){
-            generalPrice = oneBoughtproduct.addPriceToTotal(generalPrice);
-        }
-
-        Integer promotionDiscount = 0; //promotionDiscount
-        for(Product oneBoughtproduct : boughtProducts){
-            String productName = oneBoughtproduct.getName();
-            if(promotionProducts.containsKey(productName)){
-                int colaValue = promotionProducts.get(productName);
-                Integer onePromotionDiscount = oneBoughtproduct.getPromotionPrice(colaValue);
-                promotionDiscount += onePromotionDiscount;
-            }
-        }
-
-        Integer memberShipDiscount = 0;
-        Integer totalPriceBeforDiscount = generalPrice - promotionDiscount;
-        Validator.validateAnswer(memberShipAnswer);
-        if (memberShipAnswer.equals(AnswerConstants.ANSWER_YES.getConstants())) {
-            memberShipDiscount = (int) (totalPriceBeforDiscount * MEMBER_SHIP_DISCOUNT_PERCENT);
-            if (memberShipDiscount > 8000){
-                memberShipDiscount = 8000;
-            }
-        }
-
+        Integer generalPrice = calculateGeneralPrice(boughtProducts);
+        Integer promotionDiscount = calculatePromotionDiscount(boughtProducts, promotionProducts);
+        Integer totalPriceBeforeDiscount = generalPrice - promotionDiscount;
+        Integer memberShipDiscount = calculateMembershipDiscount(totalPriceBeforeDiscount, memberShipAnswer);
         Integer totalPrice = generalPrice - promotionDiscount - memberShipDiscount;
         return new Receipt(memberShipDiscount, promotionDiscount, generalPrice, totalPrice);
     }
 
-    public Integer getMemeberSipDiscount() {
+    private static Integer calculateGeneralPrice(List<Product> boughtProducts) {
+        Integer generalPrice = INITIAL_VALUE;
+        for (Product product : boughtProducts) {
+            generalPrice = product.addPriceToTotal(generalPrice);
+        }
+        return generalPrice;
+    }
+
+    private static Integer calculatePromotionDiscount(List<Product> boughtProducts,
+                                                      Map<String, Integer> promotionProducts) {
+        Integer promotionDiscount = NO_DISCOUNT;
+        for (Product product : boughtProducts) {
+            promotionDiscount += getProductPromotionDiscount(product, promotionProducts);
+        }
+        return promotionDiscount;
+    }
+
+    private static Integer getProductPromotionDiscount(Product product, Map<String, Integer> promotionProducts) {
+        String productName = product.getName();
+        if (!promotionProducts.containsKey(productName)) {
+            return NO_DISCOUNT;
+        }
+        int promotionValue = promotionProducts.get(productName);
+        return product.getPromotionPrice(promotionValue);
+    }
+
+    private static Integer calculateMembershipDiscount(Integer totalPriceBeforeDiscount, String memberShipAnswer) {
+        if (!isMembershipApplicable(memberShipAnswer)) {
+            return NO_DISCOUNT;
+        }
+        Integer discount = calculateRawMembershipDiscount(totalPriceBeforeDiscount);
+        return capMembershipDiscount(discount);
+    }
+
+    private static boolean isMembershipApplicable(String memberShipAnswer) {
+        Validator.validateAnswer(memberShipAnswer);
+        return memberShipAnswer.equals(AnswerConstants.ANSWER_YES.getConstants());
+    }
+
+    private static Integer calculateRawMembershipDiscount(Integer totalPriceBeforeDiscount) {
+        return (int) (totalPriceBeforeDiscount * MEMBER_SHIP_DISCOUNT_PERCENT);
+    }
+
+    private static Integer capMembershipDiscount(Integer discount) {
+        if (discount > MAX_MEMBERSHIP_DISCOUNT) {
+            return MAX_MEMBERSHIP_DISCOUNT;
+        }
+        return discount;
+    }
+
+    public Integer getMemberShipDiscount() {
         return this.memberShipDiscount;
     }
 
