@@ -147,13 +147,13 @@ public class PromotionProcessor {
 
     private int calculatePromotionBoons(String productName, Product productWithPromotion, 
                                         int promotionBoon, int currentPurchaseQuantity) {
-        int result = NO_ANY_PRODUCT;
+        int result = NO_ANY_PROMOTION_BOON;
         while (currentPurchaseQuantity > NO_ANY_PRODUCT) {
+            result += ONE_PROMOTION_BOON;
             currentPurchaseQuantity = processSinglePromotionCycle(productName, productWithPromotion, 
                                                                 promotionBoon, currentPurchaseQuantity, result);
-            result += ONE_PROMOTION_BOON;
         }
-        return result;
+        return result -1;
     }
 
     private int processSinglePromotionCycle(String productName, Product productWithPromotion, 
@@ -161,40 +161,37 @@ public class PromotionProcessor {
         int currentQuantity = productWithPromotion.firstReduceQuantityThanCheck(promotionBoon);
         currentPurchaseQuantity -= promotionBoon; 
         if (currentQuantity < NO_ANY_PRODUCT) {
-            return handleInsufficientQuantityInLoop(productName, currentQuantity, 
-                                                    currentPurchaseQuantity, result);
+            handleInsufficientQuantityInLoop(productName, currentQuantity, 
+                                                    currentPurchaseQuantity, promotionBoon);
+            return -1;                                        
         }   
         return currentPurchaseQuantity;
     }
 
-    private int handleInsufficientQuantityInLoop(String productName, int currentQuantity,
-                                                 int currentPurchaseQuantity, int result) {
-        currentPurchaseQuantity += GET_ONE_FREE;
-        int lackQuantity = handleLackOfQuantity(productName, currentQuantity, currentPurchaseQuantity);
-        return result + lackQuantity;
+    private void handleInsufficientQuantityInLoop(String productName, int currentQuantity,
+                                                 int currentPurchaseQuantity, int promotionBoon) {
+        currentPurchaseQuantity += promotionBoon;
+        handleLackOfQuantity(productName, currentQuantity, currentPurchaseQuantity);
     }
 
-    private int handleLackOfQuantity(String productName, int currentQuantity, int currentPurchaseQuantity) {
+    private void handleLackOfQuantity(String productName, int currentQuantity, int currentPurchaseQuantity) {
         String answer = userInteractionHandler.getValidatedAnswerToLackOfQuantity(productName, currentPurchaseQuantity);
-        return processLackOfQuantityAnswer(productName, currentQuantity, answer);
+        processLackOfQuantityAnswer(productName, currentQuantity, answer);
     }
 
-    private int processLackOfQuantityAnswer(String productName, int currentQuantity, String answer) {
+    private void processLackOfQuantityAnswer(String productName, int currentQuantity, String answer) {
         if (answer.equals(AnswerConstants.ANSWER_YES.getConstants())) {
             handleValidQuantityReduction(productName, currentQuantity);
-            return NO_ANY_PRODUCT;
         }
         if (answer.equals(AnswerConstants.ANSWER_NO.getConstants())) {
-            incrementAdjusted(currentQuantity);
-            return currentQuantity;
+            incrementAdjusted(Math.abs(currentQuantity));
         }
-        return NO_ANY_PRODUCT;
     }
 
     private void handleValidQuantityReduction(String productName, int currentQuantity) {
         Optional<Product> productOpt = inventoryManager.findProductWithoutPromotion(productName);
         Product productWithoutPromotion = productOpt.get();
-        int requiredQuantity = Math.abs(currentQuantity) + GET_ONE_FREE;
+        int requiredQuantity = Math.abs(currentQuantity);
         inventoryManager.reduceProductQuantity(productWithoutPromotion, requiredQuantity);
     }
 }
