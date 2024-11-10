@@ -184,6 +184,9 @@ public class PromotionProcessor {
     private void processLackOfQuantityAnswer(String productName, int currentQuantity, int beforQuantity,
                                             String answer, int currentPurchaseQuantity, Product productWithPromotion) {
         if (answer.equals(AnswerConstants.ANSWER_YES.getConstants())) {
+            if (currentPurchaseQuantity == beforQuantity){
+                return;
+            }
             handleValidQuantityReduction(productName, currentQuantity, beforQuantity);
         }
         if (answer.equals(AnswerConstants.ANSWER_NO.getConstants())) {
