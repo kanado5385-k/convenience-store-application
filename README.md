@@ -130,7 +130,7 @@
   - 사용자로부터 입력을 받는 메인 클래스.
 
 - **InputViewOfPromotionIssue**  
-  - 프로모션 관련 입력을 처리하는 클래스.
+  - 프로모션 관련 추가 입력을 처리하는 클래스.
 
 #### 🔽 **Output**
 - **ExceptionOutputView**  
@@ -254,5 +254,3 @@
 
 ## 폴더 및 파일 구조 시각화 🌲
 <img width="548" alt="store_tree" src="https://github.com/user-attachments/assets/1d1c6102-d13b-4434-9fd2-17b89df5279e">
-
-
