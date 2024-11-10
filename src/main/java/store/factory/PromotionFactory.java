@@ -1,5 +1,6 @@
-package store.domain;
+package store.factory;
 
+import store.domain.Promotion;
 import store.utilities.Parser;
 import store.utilities.Splitter;
 

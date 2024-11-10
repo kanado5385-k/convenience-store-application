@@ -10,6 +10,8 @@ import store.dto.ReceiptDTO;
 import store.enums.constants.AnswerConstants;
 import store.factory.DomainFactory;
 import store.factory.ModelFactory;
+import store.factory.ProductFactory;
+import store.factory.PromotionFactory;
 import store.factory.ViewFactory;
 import store.model.ProductFileReader;
 import store.model.ProductFileWriter;
@@ -21,9 +23,7 @@ import store.view.output.ExceptionOutputView;
 import store.view.output.OutputView;
 import store.domain.Order;
 import store.domain.Product;
-import store.domain.ProductFactory;
 import store.domain.Promotion;
-import store.domain.PromotionFactory;
 
 public class StoreController {
     private Buying buying;
