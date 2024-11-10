@@ -253,4 +253,4 @@
  
 
 ## 폴더 및 파일 구조 시각화 🌲
-r<img width="568" alt="store_tree" src="https://github.com/user-attachments/assets/4361b8b8-d72f-426b-9059-73908034d8e4">
+<img width="568" alt="store_tree" src="https://github.com/user-attachments/assets/4361b8b8-d72f-426b-9059-73908034d8e4">
