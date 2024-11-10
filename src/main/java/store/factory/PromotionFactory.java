@@ -19,7 +19,7 @@ public class PromotionFactory {
     private static final int END_DATE_INDEX = 4;
 
     public List<Promotion> createPromotions(String promotionInformation) {
-        return Arrays.stream(Splitter.splitStringFileLines(promotionInformation))
+        return Splitter.splitStringFileLines(promotionInformation).stream()
             .filter(line -> !isSkippablePromotionLine(line))
             .map(this::parsePromotion)
             .filter(Objects::nonNull)
@@ -31,11 +31,11 @@ public class PromotionFactory {
     }
 
     private Promotion parsePromotion(String line) {
-        String[] fields = Splitter.splitStringLine(line);
-        if (fields.length != EXPECTED_FIELD_COUNT) {
+        List<String> fields = Splitter.splitStringLine(line);
+        if (fields.size() != EXPECTED_FIELD_COUNT) {
             return null;
         }
-        Integer get = Parser.parseNumberToInt(fields[BUY_INDEX]);
-        return new Promotion(fields[NAME_INDEX], get, fields[START_DATE_INDEX], fields[END_DATE_INDEX]);
+        Integer get = Parser.parseNumberToInt(fields.get(BUY_INDEX));
+        return new Promotion(fields.get(NAME_INDEX), get, fields.get(START_DATE_INDEX), fields.get(END_DATE_INDEX));
     }
 }

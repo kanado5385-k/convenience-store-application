@@ -57,12 +57,12 @@ public class ProductFileReader {
     }
 
     private String formatProductLine(String line) {
-        String[] tokens = Splitter.splitStringLine(line);
-        String productLine = HEADER_PREFIX + tokens[TOKEN_NAME] + SPACE 
-            + formatPrice(tokens[TOKEN_PRICE]) + " " + formatQuantity(tokens[TOKEN_QUANTITY]);
-        if (!formatPromotion(tokens[TOKEN_PROMOTION]).isEmpty()) {
-            productLine += SPACE + formatPromotion(tokens[TOKEN_PROMOTION]);
-        }
+        List<String> tokens = Splitter.splitStringLine(line);
+        String productLine = HEADER_PREFIX + tokens.get(TOKEN_NAME) + SPACE 
+            + formatPrice(tokens.get(TOKEN_PRICE)) + " " + formatQuantity(tokens.get(TOKEN_QUANTITY));
+        if (!formatPromotion(tokens.get(TOKEN_PROMOTION)).isEmpty()) {
+            productLine += SPACE + formatPromotion(tokens.get(TOKEN_PROMOTION));
+    }
     
         return productLine;
     }

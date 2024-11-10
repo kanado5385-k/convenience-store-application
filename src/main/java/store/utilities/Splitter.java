@@ -1,6 +1,7 @@
 package store.utilities;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Splitter {
@@ -12,12 +13,12 @@ public class Splitter {
 
     private static final int NEXT_INDEX = 1;
 
-    public static String[] splitStringLine(String line) {
-        return line.split(LINE_DELIMITER);
+    public static List<String> splitStringLine(String line) {
+        return Arrays.asList(line.split(LINE_DELIMITER));
     }
 
-    public static String[] splitStringFileLines(String stringFile) {
-        return stringFile.split(LINES_DELIMITER);
+    public static List<String> splitStringFileLines(String stringFile) {
+        return Arrays.asList(stringFile.split(LINES_DELIMITER));
     }
 
     public static List<String> splitStringOrder(String line) {
