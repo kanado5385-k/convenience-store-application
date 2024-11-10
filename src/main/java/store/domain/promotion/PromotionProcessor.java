@@ -176,15 +176,16 @@ public class PromotionProcessor {
 
     private void handleLackOfQuantity(String productName, int currentQuantity, int currentPurchaseQuantity) {
         String answer = userInteractionHandler.getValidatedAnswerToLackOfQuantity(productName, currentPurchaseQuantity);
-        processLackOfQuantityAnswer(productName, currentQuantity, answer);
+        processLackOfQuantityAnswer(productName, currentQuantity, answer, currentPurchaseQuantity);
     }
 
-    private void processLackOfQuantityAnswer(String productName, int currentQuantity, String answer) {
+    private void processLackOfQuantityAnswer(String productName, int currentQuantity,
+                                            String answer, int currentPurchaseQuantity) {
         if (answer.equals(AnswerConstants.ANSWER_YES.getConstants())) {
             handleValidQuantityReduction(productName, currentQuantity);
         }
         if (answer.equals(AnswerConstants.ANSWER_NO.getConstants())) {
-            incrementAdjusted(Math.abs(currentQuantity));
+            incrementAdjusted(currentPurchaseQuantity);
         }
     }
 
