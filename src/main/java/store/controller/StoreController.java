@@ -63,11 +63,11 @@ public class StoreController {
         return new PromotionFactory().createPromotions(promotionFileReader.readFileAsString());
     }
 
-    private PromotionPolicy createPromotionPolicy(List<Product> products, List<Promotion> promotions){
+    private PromotionPolicy createPromotionPolicy(List<Product> products, List<Promotion> promotions) {
         return new PromotionPolicy(products, promotions);
     }
 
-    private Inventory createInventory(List<Product> products, PromotionPolicy policy){
+    private Inventory createInventory(List<Product> products, PromotionPolicy policy) {
         return new Inventory(products, policy);
     }
 
@@ -121,7 +121,7 @@ public class StoreController {
         }
     }
 
-    private String validateAnswerToAdditionalOrder(String answer){
+    private String validateAnswerToAdditionalOrder(String answer) {
         Validator.validateAnswer(answer);
         return answer;
     }

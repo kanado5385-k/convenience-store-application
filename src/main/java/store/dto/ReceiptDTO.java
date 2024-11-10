@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ReceiptDTO {
-
     private Map<String, Integer> promotionProducts; 
     private List<Product> boughtProducts;           
     private Integer memberShipDiscount;             

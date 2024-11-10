@@ -31,7 +31,7 @@ public class ProductFileWriter {
     private List<String> formatProducts(List<Product> products) {
         return products.stream()
             .map(this::formatProduct)
-            .collect(Collectors.toCollection(ArrayList::new)); // 가변 리스트 생성
+            .collect(Collectors.toCollection(ArrayList::new));
     }
 
     private String formatProduct(Product product) {

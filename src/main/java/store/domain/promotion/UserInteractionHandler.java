@@ -4,6 +4,7 @@ import store.utilities.Validator;
 import store.view.input.InputViewOfPromotionIssue;
 
 public class UserInteractionHandler {
+    
     private String readAndValidateAnswerForOneMoreProduct(String productName) {
         String answer = InputViewOfPromotionIssue.readAnswerToOneMoreProduct(productName);
         Validator.validateAnswer(answer);

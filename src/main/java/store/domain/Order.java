@@ -23,7 +23,7 @@ public class Order {
     private final Map<String, Integer> promotionProducts;
     private final List<Product> boughtProducts;
 
-    private Order(Map<String, Integer> promotionProducts, List<Product> boughtProducts){
+    private Order(Map<String, Integer> promotionProducts, List<Product> boughtProducts) {
         this.promotionProducts = promotionProducts;
         this.boughtProducts = boughtProducts;
     }

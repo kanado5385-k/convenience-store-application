@@ -31,7 +31,7 @@ public class OutputView {
     private static final String FINAL_PAYMENT_LABEL = "내실돈";
 
     public void printWelcomeMessage() {
-        System.out.println(IOMessage.PRINT_WELLCOME_MESSAGE.getMessage() + System.lineSeparator());
+        System.out.println(IOMessage.PRINT_WELCOME_MESSAGE.getMessage() + System.lineSeparator());
     }
 
     public void printProducts(String products) {
@@ -65,7 +65,7 @@ public class OutputView {
         System.out.println(RECEIPT_FOOTER);
     }
 
-    private void printNoAnyPromotion(){
+    private void printNoAnyPromotion() {
         System.out.println(IOMessage.PRINT_NO_ANY_PROMOTION_PRODUCT.getMessage());
         System.out.println(RECEIPT_FOOTER);
     }

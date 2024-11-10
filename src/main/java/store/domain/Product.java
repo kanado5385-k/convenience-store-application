@@ -42,7 +42,7 @@ public class Product {
         return currentQuantity;
     }
 
-    public void reduceQuantity(int purchaseQuantity){
+    public void reduceQuantity(int purchaseQuantity) {
         this.quantity -= purchaseQuantity;
     }
 
