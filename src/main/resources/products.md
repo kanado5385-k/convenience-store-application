@@ -1,5 +1,5 @@
 name,price,quantity,promotion
-콜라,1000,5,탄산2+1
+콜라,1000,10,탄산2+1
 콜라,1000,10,null
 사이다,1000,8,탄산2+1
 사이다,1000,7,null
@@ -15,5 +15,5 @@ name,price,quantity,promotion
 초코바,1200,5,null
 에너지바,2000,5,null
 정식도시락,6400,6,null
-컵라면,1700,0,MD추천상품
+컵라면,1700,1,MD추천상품
 컵라면,1700,10,null

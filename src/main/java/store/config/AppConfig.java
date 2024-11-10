@@ -1,9 +1,9 @@
 package store.config;
 
-import store.controller.DomainFactory;
-import store.controller.ModelFactory;
 import store.controller.StoreController;
-import store.controller.ViewFactory;
+import store.factory.DomainFactory;
+import store.factory.ModelFactory;
+import store.factory.ViewFactory;
 
 
 public class AppConfig {

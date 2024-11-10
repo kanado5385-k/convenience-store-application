@@ -1,4 +1,4 @@
-package store.controller;
+package store.factory;
 
 import java.util.List;
 
