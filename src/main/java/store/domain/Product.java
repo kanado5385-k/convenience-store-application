@@ -1,7 +1,6 @@
 package store.domain;
 
 public class Product {
-    private static final String NOT_HAVE_PROMOTION = "null";
     private static final int NO_ANY_PRODUCT = 0;
 
     private final String name;
@@ -13,7 +12,7 @@ public class Product {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
-        this.nameOfPromotion = nameOfPromotion;  
+        this.nameOfPromotion = nameOfPromotion;
     }
 
     public boolean isSameName(String name) {
@@ -21,7 +20,7 @@ public class Product {
     }
 
     public boolean hasPromotion() {
-        return !NOT_HAVE_PROMOTION.equals(this.nameOfPromotion);
+        return this.nameOfPromotion != null && !this.nameOfPromotion.isEmpty();
     }
 
     public boolean isEnoughQuantity() {

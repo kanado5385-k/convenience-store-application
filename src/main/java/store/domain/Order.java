@@ -56,7 +56,7 @@ public class Order {
             return;
         }
         inventory.buyGeneralProduct(productName, purchaseQuantity);
-        }
+    }
 
     private static int parseAndValidateQuantity(String quantity) {
         int purchaseQuantity = Parser.parseNumberToInt(quantity);
@@ -65,7 +65,7 @@ public class Order {
     }
 
     private static void processPromotionProduct(String productName, int purchaseQuantity, 
-                                            Inventory inventory, Map<String, Integer> promotionProduct) {
+                                                Inventory inventory, Map<String, Integer> promotionProduct) {
         List<Integer> result = inventory.buyPromotionProduct(productName, purchaseQuantity);
         int promotionalBenefits = result.get(INDEX_OF_BENEFIT);
         int rejectedQuantity = result.get(INDEX_OF_REJECTED_PRODUCT);
@@ -94,8 +94,6 @@ public class Order {
         boughtProducts.add(boughtProduct);
     }
 
-    
-
     public Map<String, Integer> getPromotionProducts() {
         return Collections.unmodifiableMap(this.promotionProducts);
     }
@@ -103,5 +101,4 @@ public class Order {
     public List<Product> getBoughtProducts() {
         return Collections.unmodifiableList(this.boughtProducts);
     }
-
 }

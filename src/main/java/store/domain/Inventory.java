@@ -3,7 +3,7 @@ package store.domain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import store.enums.constants.AnswerConstants;
 import store.enums.messages.ErrorMessage;
@@ -11,7 +11,6 @@ import store.utilities.Validator;
 import store.view.input.InputViewOfPromotionIssue;
 
 public class Inventory {
-    private static final int GET_ONLY_ONE = 0;
     private static final int NO_ANY_PRODUCT = 0;
     private static final int GET_ONE_FREE = 1;
     private static final int NO_ANY_PROMOTION_BOON = 0;
@@ -27,18 +26,15 @@ public class Inventory {
 
     public boolean isProductWithPromotion(String productName) {
         isValidateNameOfProduct(productName);
-        Product productsWithPromotion = findProductWithPromotion(productName);
-        if (!(productsWithPromotion == null)) {
-            return isEnoughQuantityOfPromotionProduct(productsWithPromotion)
-                    && isValidDateOfPromotion(productsWithPromotion);
-        }
-        return false;
+        Optional<Product> productOpt = findProductWithPromotion(productName);
+        return productOpt.isPresent() && isEnoughQuantityOfPromotionProduct(productOpt.get())
+                && isValidDateOfPromotion(productOpt.get());
     }
 
     private void isValidateNameOfProduct(String productName) {
         boolean productExists = this.products.stream()
             .anyMatch(product -> product.isSameName(productName));
-        
+
         if (!productExists) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_INPUT_PRODUCT_NAME.getMessage());
         }
@@ -48,42 +44,40 @@ public class Inventory {
         return product.isEnoughQuantity();
     }
 
-    private Product findProductWithPromotion(String productName) {
+    private Optional<Product> findProductWithPromotion(String productName) {
         return this.products.stream()
                 .filter(product -> product.isSameName(productName))
                 .filter(Product::hasPromotion)
-                .findFirst()
-                .orElse(null);
+                .findFirst();
     }
 
     private boolean isValidDateOfPromotion(Product product) {
         String promotionName = product.getNameOfPromotion();
-        Promotion promotion = this.promotions.stream()
+        Optional<Promotion> promotionOpt = this.promotions.stream()
                 .filter(promotionObj -> promotionObj.isSamePromotionName(promotionName))
-                .findFirst()
-                .orElse(null);
-        
-        return promotion != null && promotion.isBetweenStartAndEndDate();
-    }
+                .findFirst();
 
+        return promotionOpt.isPresent() && promotionOpt.get().isBetweenStartAndEndDate();
+    }
 
     public List<Integer> buyPromotionProduct(String productName, int purchaseQuantity) {
         List<Integer> resultList = new ArrayList<>();
-        
-        Product productWithPromotion = getProductWithPromotion(productName);
+
+        Optional<Product> productOpt = getProductWithPromotion(productName);
+        Product productWithPromotion = productOpt.get();
         int promotionBoon = getPromotionBoon(productName);
-    
+
         int result;
-        int lackQuantity = 0;
+        int lackQuantity = NO_ANY_PRODUCT;
         if (productWithPromotion.isSmallQuantityThanPromotionBoon(promotionBoon)) {
             result = handleSmallQuantityCase(productName, purchaseQuantity, productWithPromotion);
         } else {
             result = processPurchaseQuantity(productName, purchaseQuantity, productWithPromotion, promotionBoon);
         }
-    
+
         resultList.add(result);
         resultList.add(lackQuantity);
-    
+
         return resultList;
     }
 
@@ -101,30 +95,32 @@ public class Inventory {
         return handleGreaterThanPromotionBoonCase(productName, purchaseQuantity, productWithPromotion, promotionBoon);
     }
 
-    private Product getProductWithPromotion(String productName) {
+    public Optional<Product> getProductWithPromotion(String productName) {
         return findProductWithPromotion(productName);
     }
 
     private int getPromotionBoon(String productName) {
-        Product product = getProductWithPromotion(productName);
+        Optional<Product> productOpt = getProductWithPromotion(productName);
+        Product product = productOpt.get();
         String promotionName = product.getNameOfPromotion();
-        List<Promotion> promotions = this.promotions.stream()
+        Optional<Promotion> promotionOpt = this.promotions.stream()
                 .filter(promotion -> promotion.isSamePromotionName(promotionName))
-                .collect(Collectors.toList());
-        Promotion promotion = promotions.get(GET_ONLY_ONE);
+                .findFirst();
+        Promotion promotion = promotionOpt.get();
         return promotion.getPromotionBoon();
     }
 
     private int handleSmallQuantityCase(String productName, int purchaseQuantity, Product productWithPromotion) {
         int currentQuantity = productWithPromotion.firstReduceQuantityThanCheck(purchaseQuantity);
         if (currentQuantity >= NO_ANY_PRODUCT) {
-            return 1;
+            return ONE_PROMOTION_BOON;
         }
         return handleInsufficientPromotionProduct(productName, currentQuantity);
     }
 
     private int handleInsufficientPromotionProduct(String productName, int currentQuantity) {
-        Product productWithoutPromotion = getProductWithoutPromotion(productName);
+        Optional<Product> productOpt = getProductWithoutPromotion(productName);
+        Product productWithoutPromotion = productOpt.get();
         int requiredQuantity = Math.abs(currentQuantity);
         validateSufficientQuantity(productWithoutPromotion, requiredQuantity);
         productWithoutPromotion.reduceQuantity(requiredQuantity);
@@ -196,16 +192,15 @@ public class Inventory {
         return result + ONE_PROMOTION_BOON;
     }
 
-
     private int handleInsufficientQuantityInLoop(String productName, int currentQuantity,
-                                             int currentPurchaseQuantity, int result) {
-    currentPurchaseQuantity += GET_ONE_FREE;
-    int lackQuantity = handleLackOfQuantity(productName, currentQuantity, currentPurchaseQuantity);
-    return result + lackQuantity;
-}
+                                                 int currentPurchaseQuantity, int result) {
+        currentPurchaseQuantity += GET_ONE_FREE;
+        int lackQuantity = handleLackOfQuantity(productName, currentQuantity, currentPurchaseQuantity);
+        return result + lackQuantity;
+    }
 
     private int handleExcessQuantity(String productName, int currentPurchaseQuantity,
-            Product productWithPromotion, int promotionBoon, int result) {
+                                     Product productWithPromotion, int promotionBoon, int result) {
         productWithPromotion.addQuantity(promotionBoon);
         List<Integer> promotionResult = buyPromotionProduct(productName, currentPurchaseQuantity + promotionBoon);
         result += promotionResult.get(0);
@@ -220,15 +215,16 @@ public class Inventory {
     private int processLackOfQuantityAnswer(String productName, int currentQuantity, String answer) {
         if (answer.equals(AnswerConstants.ANSWER_YES.getConstants())) {
             handleValidQuantityReduction(productName, currentQuantity);
-            return 0;
+            return NO_ANY_PRODUCT;
         } else if (answer.equals(AnswerConstants.ANSWER_NO.getConstants())) {
             return currentQuantity;
         }
-        return 0;
+        return NO_ANY_PRODUCT;
     }
-    
+
     private void handleValidQuantityReduction(String productName, int currentQuantity) {
-        Product productWithoutPromotion = getProductWithoutPromotion(productName);
+        Optional<Product> productOpt = getProductWithoutPromotion(productName);
+        Product productWithoutPromotion = productOpt.get();
         int requiredQuantity = Math.abs(currentQuantity) + GET_ONE_FREE;
         validateSufficientQuantity(productWithoutPromotion, requiredQuantity);
         productWithoutPromotion.reduceQuantity(requiredQuantity);
@@ -247,36 +243,32 @@ public class Inventory {
         }
     }
 
-    public Product getProductWithoutPromotion(String productName) {
+    public Optional<Product> getProductWithoutPromotion(String productName) {
         return findProductWithoutPromotion(productName);
     }
 
-    private Product findProductWithoutPromotion(String productName) {
+    private Optional<Product> findProductWithoutPromotion(String productName) {
         return this.products.stream()
                 .filter(product -> product.isSameName(productName))
                 .filter(product -> !product.hasPromotion())
-                .findFirst()
-                .orElse(null);
+                .findFirst();
     }
 
     public void buyGeneralProduct(String productName, int currentQuantity) {
-        Product productWithoutPromotion = getProductWithoutPromotion(productName);
+        Optional<Product> productOpt = getProductWithoutPromotion(productName);
+        Product productWithoutPromotion = productOpt.get();
         validateSufficientQuantity(productWithoutPromotion, currentQuantity);
         productWithoutPromotion.reduceQuantity(currentQuantity);
     }
 
     public int getPriceOfProductPacket(String productName, int quantity) {
-        Product productWithoutPromotion = getProductWithoutPromotion(productName);
-    
-        if (productWithoutPromotion == null) {
-            return 0;
-        }
-    
+        Optional<Product> productOpt = getProductWithoutPromotion(productName);
+        Product productWithoutPromotion = productOpt.get();
+
         return productWithoutPromotion.getPriceOfOnePacket(quantity);
     }
 
     public List<Product> getProducts() {
         return Collections.unmodifiableList(this.products);
     }
-
 }

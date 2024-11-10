@@ -39,9 +39,7 @@ public class Receipt {
                 int colaValue = promotionProducts.get(productName);
                 Integer onePromotionDiscount = oneBoughtproduct.getPromotionPrice(colaValue);
                 promotionDiscount += onePromotionDiscount;
-
             }
-
         }
 
         Integer memberShipDiscount = 0;
