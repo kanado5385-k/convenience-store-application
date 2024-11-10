@@ -18,6 +18,7 @@ public class ProductFileReader {
     private static final String NO_STOCK = "재고 없음";
     private static final String NULL_STRING = "null";
     private static final String EMPTY_STRING = "";
+    private static final String SPACE = " ";
     private static final String NEWLINE = "\n";
     private static final String ZERO_STRING = "0";
     private static final int HEADER_LINE_INDEX = 1;
@@ -57,10 +58,10 @@ public class ProductFileReader {
 
     private String formatProductLine(String line) {
         String[] tokens = Splitter.splitStringLine(line);
-        String productLine = HEADER_PREFIX + tokens[TOKEN_NAME] + " " 
+        String productLine = HEADER_PREFIX + tokens[TOKEN_NAME] + SPACE 
             + formatPrice(tokens[TOKEN_PRICE]) + " " + formatQuantity(tokens[TOKEN_QUANTITY]);
         if (!formatPromotion(tokens[TOKEN_PROMOTION]).isEmpty()) {
-            productLine += " " + formatPromotion(tokens[TOKEN_PROMOTION]);
+            productLine += SPACE + formatPromotion(tokens[TOKEN_PROMOTION]);
         }
     
         return productLine;
