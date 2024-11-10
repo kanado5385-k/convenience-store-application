@@ -26,34 +26,44 @@ public class Inventory {
     }
 
     public boolean isProductWithPromotion(String productName) {
-        List<Product> productsWithPromotion = findProductWithPromotion(productName);
-        if (!productsWithPromotion.isEmpty()) {
+        isValidateNameOfProduct(productName);
+        Product productsWithPromotion = findProductWithPromotion(productName);
+        if (!(productsWithPromotion == null)) {
             return isEnoughQuantityOfPromotionProduct(productsWithPromotion)
                     && isValidDateOfPromotion(productsWithPromotion);
         }
         return false;
     }
 
-    private boolean isEnoughQuantityOfPromotionProduct(List<Product> products) {
-        Product product = products.get(GET_ONLY_ONE);
+    private void isValidateNameOfProduct(String productName) {
+        boolean productExists = this.products.stream()
+            .anyMatch(product -> product.isSameName(productName));
+        
+        if (!productExists) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_INPUT_PRODUCT_NAME.getMessage());
+        }
+    }
+
+    private boolean isEnoughQuantityOfPromotionProduct(Product product) {
         return product.isEnoughQuantity();
     }
 
-    private List<Product> findProductWithPromotion(String productName) {
+    private Product findProductWithPromotion(String productName) {
         return this.products.stream()
                 .filter(product -> product.isSameName(productName))
                 .filter(Product::hasPromotion)
-                .collect(Collectors.toList());
+                .findFirst()
+                .orElse(null);
     }
 
-    private boolean isValidDateOfPromotion(List<Product> products) {
-        Product product = products.get(GET_ONLY_ONE);
+    private boolean isValidDateOfPromotion(Product product) {
         String promotionName = product.getNameOfPromotion();
-        List<Promotion> promotions = this.promotions.stream()
-                .filter(promotion -> promotion.isSamePromotionName(promotionName))
-                .collect(Collectors.toList());
-        Promotion promotion = promotions.get(GET_ONLY_ONE);
-        return promotion.isBetweenStartAndEndDate();
+        Promotion promotion = this.promotions.stream()
+                .filter(promotionObj -> promotionObj.isSamePromotionName(promotionName))
+                .findFirst()
+                .orElse(null);
+        
+        return promotion != null && promotion.isBetweenStartAndEndDate();
     }
 
 
@@ -92,8 +102,7 @@ public class Inventory {
     }
 
     private Product getProductWithPromotion(String productName) {
-        List<Product> productsWithPromotion = findProductWithPromotion(productName);
-        return productsWithPromotion.get(GET_ONLY_ONE);
+        return findProductWithPromotion(productName);
     }
 
     private int getPromotionBoon(String productName) {
@@ -239,15 +248,15 @@ public class Inventory {
     }
 
     public Product getProductWithoutPromotion(String productName) {
-        List<Product> productsWithoutPromotion = findProductWithoutPromotion(productName);
-        return productsWithoutPromotion.get(GET_ONLY_ONE);
+        return findProductWithoutPromotion(productName);
     }
 
-    private List<Product> findProductWithoutPromotion(String productName) {
+    private Product findProductWithoutPromotion(String productName) {
         return this.products.stream()
                 .filter(product -> product.isSameName(productName))
                 .filter(product -> !product.hasPromotion())
-                .collect(Collectors.toList());
+                .findFirst()
+                .orElse(null);
     }
 
     public void buyGeneralProduct(String productName, int currentQuantity) {
@@ -258,6 +267,11 @@ public class Inventory {
 
     public int getPriceOfProductPacket(String productName, int quantity) {
         Product productWithoutPromotion = getProductWithoutPromotion(productName);
+    
+        if (productWithoutPromotion == null) {
+            return 0;
+        }
+    
         return productWithoutPromotion.getPriceOfOnePacket(quantity);
     }
 

@@ -94,6 +94,8 @@ public class Order {
         boughtProducts.add(boughtProduct);
     }
 
+    
+
     public Map<String, Integer> getPromotionProducts() {
         return Collections.unmodifiableMap(this.promotionProducts);
     }
