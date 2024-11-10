@@ -14,6 +14,7 @@ import store.model.PromotionFileReader;
 import store.service.ReceiptService;
 import store.utilities.Validator;
 import store.view.input.InputView;
+import store.view.output.ExceptionOutputView;
 import store.view.output.OutputView;
 import store.domain.Order;
 import store.domain.Product;
@@ -78,7 +79,7 @@ public class StoreController {
                 String stringOrder = inputView.readOrder();
                 return Order.createOrder(stringOrder, inventory);
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                ExceptionOutputView.printErrorMessage(e.getMessage());
             }
         }
     }
@@ -89,7 +90,7 @@ public class StoreController {
                 String answerToMemberShip = inputView.readMemberShipOrNot();
                 return Receipt.createReceipt(order, answerToMemberShip);
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                ExceptionOutputView.printErrorMessage(e.getMessage());
             }
         }
     }
@@ -116,7 +117,7 @@ public class StoreController {
                 String answer = inputView.readAdditionalOrderOrNot();
                 return validateAnswerToAdditionalOrder(answer);
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                ExceptionOutputView.printErrorMessage(e.getMessage());
             }
         }
     }

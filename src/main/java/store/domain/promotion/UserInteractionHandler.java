@@ -2,9 +2,10 @@ package store.domain.promotion;
 
 import store.utilities.Validator;
 import store.view.input.InputViewOfPromotionIssue;
+import store.view.output.ExceptionOutputView;
 
 public class UserInteractionHandler {
-    
+
     private String readAndValidateAnswerForOneMoreProduct(String productName) {
         String answer = InputViewOfPromotionIssue.readAnswerToOneMoreProduct(productName);
         Validator.validateAnswer(answer);
@@ -16,7 +17,7 @@ public class UserInteractionHandler {
             try {
                 return readAndValidateAnswerForOneMoreProduct(productName);
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                ExceptionOutputView.printErrorMessage(e.getMessage());
             }
         }
     }
@@ -32,7 +33,7 @@ public class UserInteractionHandler {
             try {
                 return readAndValidateAnswerToLackOfQuantity(productName, currentPurchaseQuantity);
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                ExceptionOutputView.printErrorMessage(e.getMessage());
             }
         }
     }
