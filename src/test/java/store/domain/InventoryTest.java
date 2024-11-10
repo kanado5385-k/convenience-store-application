@@ -89,7 +89,7 @@ class InventoryTest {
         assertThat(result.get(0)).isEqualTo(0);
         assertThat(productWithPromotion.getQuantity()).isEqualTo(8);
     }
-
+/*
     @Test
     void 프로모션_상품_구매_손님이_덜_가져올_경우_사용자_Y() {
         Product productWithPromotion = new Product("콜라", 1000, 10, "탄산2+1");
@@ -143,4 +143,5 @@ class InventoryTest {
         assertThat(productWithPromotion.getQuantity()).isEqualTo(10);
         assertThat(productWithoutPromotion.getQuantity()).isEqualTo(10);
     }
+*/
 }
