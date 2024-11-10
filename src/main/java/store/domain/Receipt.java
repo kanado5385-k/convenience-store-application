@@ -8,7 +8,7 @@ import store.utilities.Validator;
 
 
 public class Receipt {
-    private static final double MEMBER_SHIP_DISCOUNT_PERCENT = 0.25;
+    private static final double MEMBER_SHIP_DISCOUNT_PERCENT = 0.3;
     private static final int MAX_MEMBERSHIP_DISCOUNT = 8000;
     private static final int NO_DISCOUNT = 0;
     private static final int INITIAL_VALUE = 0;
@@ -81,10 +81,11 @@ public class Receipt {
     }
 
     private static Integer capMembershipDiscount(Integer discount) {
-        if (discount > MAX_MEMBERSHIP_DISCOUNT) {
+        int truncatedDiscount = (discount / 1000) * 1000;
+        if (truncatedDiscount > MAX_MEMBERSHIP_DISCOUNT) {
             return MAX_MEMBERSHIP_DISCOUNT;
         }
-        return discount;
+        return truncatedDiscount;
     }
 
     public Integer getMemberShipDiscount() {
