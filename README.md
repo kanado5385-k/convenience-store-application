@@ -101,3 +101,149 @@
 | 입력된 수량이 자연수가 아닐 경우                              | 2g       | 예외 안내 메시지와 함께 사용자에게 구매할 상품과 수량 입력을 다시 요청한다.                             |
 | 입력된 상품의 수량이 0일 경우                                 | 2h       | 예외 안내 메시지와 함께 사용자에게 구매할 상품과 수량 입력을 다시 요청한다.                             |
 | Y/N 입력 과정에서 "Y" 또는 "N" 중에 아닌 값이 입력될 경우                                 | 4n, 5m       | 예외 안내 메시지와 함께 사용자에게 입력을 다시 요청한다.                             |
+
+## MVC 구조 💡
+### 🔵 **Model**
+- **ProductFileReader**  
+  - 파일에서 상품 정보를 읽어오는 클래스.
+
+- **ProductFileWriter**  
+  - 상품 정보를 파일에 기록하는 클래스.
+
+- **PromotionFileReader**  
+  - 파일에서 프로모션 정보를 읽어오는 클래스.
+
+---
+
+### 🟢 **Controller**
+- **StoreController**  
+  - 애플리케이션의 전반적인 흐름을 제어하는 클래스.  
+
+---
+
+### 🟡 **View**
+#### 🔽 **Input**
+- **InputView**  
+  - 사용자로부터 입력을 받는 메인 클래스.
+
+- **InputViewOfPromotionIssue**  
+  - 프로모션 관련 입력을 처리하는 클래스.
+
+#### 🔽 **Output**
+- **ExceptionOutputView**  
+  - 예외 상황에 대한 메시지를 출력하는 클래스.
+
+- **OutputView**  
+  - 일반적인 결과 출력을 처리하는 클래스.
+
+---
+
+### 🟤 **Service**
+- **ReceiptService**  
+  - 영수증 생성 및 관련 비즈니스 로직을 처리하는 서비스.
+
+---
+
+### 🔴 **Domain**
+- **Buying**  
+  - 구매 정보를 관리하는 클래스.
+
+- **Order**  
+  - 주문 정보를 관리하는 클래스.
+
+- **Product**  
+  - 개별 상품 정보를 관리하는 클래스.
+
+- **Promotion**  
+  - 프로모션 정보를 관리하는 클래스.
+
+- **Receipt**  
+  - 영수증 데이터를 관리하는 클래스.
+
+#### 🔽 **inventory**
+- **Inventory**  
+  - 재고 정보를 관리하는 클래스.
+
+- **InventoryManager**  
+  - 재고 관련 로직을 처리하는 클래스.
+
+#### 🔽 **promotion**
+- **PromotionPolicy**  
+  - 프로모션 정책을 정의하는 클래스.
+
+- **PromotionProcessor**  
+  - 프로모션 적용 로직을 처리하는 클래스.
+
+- **PromotionValidator**  
+  - 프로모션 유효성 검사를 수행하는 클래스.
+
+- **UserInteractionHandler**  
+  - 사용자와의 상호작용을 담당하는 클래스.
+
+---
+
+### 🟣 **DTO**
+- **ReceiptDTO**  
+  - 영수증 데이터를 전달하기 위한 Data Transfer Object.
+
+---
+
+### 🟢 **Factory**
+- **DomainFactory**  
+  - 도메인 객체를 생성하는 팩토리 클래스.
+
+- **ModelFactory**  
+  - 모델 객체를 생성하는 팩토리 클래스.
+
+- **ProductFactory**  
+  - `Product` 객체 생성을 담당하는 팩토리 클래스.
+
+- **PromotionFactory**  
+  - `Promotion` 객체 생성을 담당하는 팩토리 클래스.
+
+- **ViewFactory**  
+  - 뷰 객체를 생성하는 팩토리 클래스.
+
+---
+
+### 🟠 **Enums**
+#### 🔽 **Constants**
+- **AnswerConstants**  
+  - 정답 관련 상수를 관리하는 클래스.
+
+- **CommonConstants**  
+  - 공통적으로 사용되는 상수를 관리하는 클래스.
+
+- **FilePathConstants**  
+  - 파일 경로 관련 상수를 관리하는 클래스.
+
+#### 🔽 **Messages**
+- **ErrorMessage**  
+  - 에러 메시지를 관리하는 enum.
+
+- **IOMessage**  
+  - 입출력 메시지를 관리하는 enum.
+
+- **SystemMessage**  
+  - 시스템 메시지를 관리하는 인터페이스.
+
+- **BuyingStatus**  
+  - 구매 상태를 나타내는 enum.
+
+---
+
+### ⚪ **Utilities**
+- **Parser**  
+  - 문자열을 파싱하여 필요한 형식으로 변환하는 유틸리티 클래스.
+
+- **Splitter**  
+  - 문자열을 특정 구분자로 나누는 유틸리티 클래스.
+
+- **Validator**  
+  - 유효성 검사를 수행하는 유틸리티 클래스.
+
+---
+
+### 🔵 **Config**
+- **AppConfig**  
+  - 애플리케이션 설정 및 Bean 관리 클래스.
