@@ -5,12 +5,12 @@ import java.util.List;
 import store.domain.Buying;
 import store.domain.Inventory;
 import store.domain.Receipt;
-import store.dto.ReseiptDTO;
+import store.dto.ReceiptDTO;
 import store.enums.constants.AnswerConstants;
 import store.model.ProductFileReader;
 import store.model.ProductFileWriter;
 import store.model.PromotionFileReader;
-import store.service.ReseiptService;
+import store.service.ReceiptService;
 import store.utilities.Validator;
 import store.view.input.InputView;
 import store.view.output.OutputView;
@@ -50,7 +50,7 @@ public class StoreController {
     private Inventory loadInventory() {
         ProductFileReader productFileReader = new ProductFileReader();
         PromotionFileReader promotionFileReader = new PromotionFileReader();
-        outputView.printProdocts(productFileReader.showProductsToUser());
+        outputView.printProducts(productFileReader.showProductsToUser());
         List<Product> products = new ProductFactory().createProducts(productFileReader.readFileAsString());
         List<Promotion> promotions = new PromotionFactory().createPromotions(promotionFileReader.readFileAsString());
 
@@ -80,8 +80,8 @@ public class StoreController {
     }
 
     private void printReceipt(Order order, Receipt receipt) {
-        ReseiptDTO reseiptDTO = new ReseiptService().createReseipt(order, receipt);
-        outputView.printReseipt(reseiptDTO);
+        ReceiptDTO receiptDTO = new ReceiptService().createReseipt(order, receipt);
+        outputView.printReceipt(receiptDTO);
     }
 
     private void saveInventory(Inventory inventory) {

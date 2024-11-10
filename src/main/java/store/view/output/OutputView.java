@@ -1,6 +1,6 @@
 package store.view.output;
 
-import store.dto.ReseiptDTO;
+import store.dto.ReceiptDTO;
 import store.enums.messages.IOMessage;
 import store.domain.Product;
 
@@ -34,11 +34,11 @@ public class OutputView {
         System.out.println(IOMessage.PRINT_WELLCOME_MESSAGE.getMessage() + System.lineSeparator());
     }
 
-    public void printProdocts(String products) {
+    public void printProducts(String products) {
         System.out.println(products + System.lineSeparator());
     }
 
-    public void printReseipt(ReseiptDTO receiptDTO) {
+    public void printReceipt(ReceiptDTO receiptDTO) {
         System.out.println(RECEIPT_HEADER);
         printProductList(receiptDTO.getBoughtProducts());
         printPromotionList(receiptDTO.getPromotionProducts());
@@ -70,7 +70,7 @@ public class OutputView {
         System.out.println(RECEIPT_FOOTER);
     }
 
-    private void printPriceSummary(ReseiptDTO receiptDTO) {
+    private void printPriceSummary(ReceiptDTO receiptDTO) {
         int totalQuantity = receiptDTO.getBoughtProducts().stream().mapToInt(Product::getQuantity).sum();
         System.out.printf(TOTAL_PRICE_FORMAT, TOTAL_LABEL, totalQuantity, String.format(POSITIVE_FORMAT, receiptDTO.getGeneralPrice()));
         System.out.printf(PROMOTION_DISCOUNT_FORMAT, PROMOTION_DISCOUNT_LABEL, formatNegative(receiptDTO.getPromotionDiscount()));

@@ -1,13 +1,13 @@
 package store.service;
 
-import store.dto.ReseiptDTO;
+import store.dto.ReceiptDTO;
 import store.domain.Order;
 import store.domain.Receipt;
 
-public class ReseiptService {
+public class ReceiptService {
     
-    public ReseiptDTO createReseipt(Order order, Receipt receipt) {
-        return new ReseiptDTO(
+    public ReceiptDTO createReseipt(Order order, Receipt receipt) {
+        return new ReceiptDTO(
             order.getPromotionProducts(), 
             order.getBoughtProducts(), 
             receipt.getMemeberSipDiscount(), 

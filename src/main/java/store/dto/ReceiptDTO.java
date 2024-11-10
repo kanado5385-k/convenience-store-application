@@ -5,7 +5,7 @@ import store.domain.Product;
 import java.util.List;
 import java.util.Map;
 
-public class ReseiptDTO {
+public class ReceiptDTO {
 
     private Map<String, Integer> promotionProducts; 
     private List<Product> boughtProducts;           
@@ -14,7 +14,7 @@ public class ReseiptDTO {
     private Integer generalPrice;                  
     private Integer totalPrice;                     
 
-    public ReseiptDTO(Map<String, Integer> promotionProducts, List<Product> boughtProducts,
+    public ReceiptDTO(Map<String, Integer> promotionProducts, List<Product> boughtProducts,
                       Integer memberShipDiscount, Integer promotionDiscount,
                       Integer generalPrice, Integer totalPrice) {
         this.promotionProducts = promotionProducts;
