@@ -17,7 +17,7 @@ class ProductFileReaderTest {
     @Test
     void readFileAsString_파일내용읽기() {
         String content = productFileReader.readFileAsString();
-        assertThat(content).contains("콜라,1000,10,탄산2+1");
         assertThat(content).contains("컵라면,1700,10,null");
+        assertThat(content).contains("오렌지주스,1800,9,MD추천상품");
     }
 }
