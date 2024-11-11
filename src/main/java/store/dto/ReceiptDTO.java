@@ -6,12 +6,12 @@ import java.util.Map;
 import store.domain.inventory.Product;
 
 public class ReceiptDTO {
-    private Map<String, Integer> promotionProducts; 
-    private List<Product> boughtProducts;           
-    private Integer memberShipDiscount;             
-    private Integer promotionDiscount;              
-    private Integer generalPrice;                  
-    private Integer totalPrice;                     
+    private final Map<String, Integer> promotionProducts; 
+    private final List<Product> boughtProducts;           
+    private final Integer memberShipDiscount;             
+    private final Integer promotionDiscount;              
+    private final Integer generalPrice;                  
+    private final Integer totalPrice;                     
 
     public ReceiptDTO(Map<String, Integer> promotionProducts, List<Product> boughtProducts,
         Integer memberShipDiscount, Integer promotionDiscount,

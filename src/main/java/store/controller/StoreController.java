@@ -26,13 +26,13 @@ import store.view.output.OutputView;
 import store.domain.Order;
 
 public class StoreController {
-    private Buying buying;
-    private InputView inputView;
-    private OutputView outputView;
+    private final Buying buying;
+    private final InputView inputView;
+    private final OutputView outputView;
 
-    private DomainFactory domainFactory;
-    private ModelFactory modelFactory;
-    private ViewFactory viewFactory;
+    private final DomainFactory domainFactory;
+    private final ModelFactory modelFactory;
+    private final ViewFactory viewFactory;
 
     public StoreController(DomainFactory domainFactory, ModelFactory modelFactory, ViewFactory viewFactory) {
         this.domainFactory = domainFactory;

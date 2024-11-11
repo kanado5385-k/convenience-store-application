@@ -14,10 +14,10 @@ public class Receipt {
     private static final int NO_DISCOUNT = 0;
     private static final int INITIAL_VALUE = 0;
 
-    private Integer memberShipDiscount;
-    private Integer promotionDiscount;
-    private Integer generalPrice;
-    private Integer totalPrice;
+    private final Integer memberShipDiscount;
+    private final Integer promotionDiscount;
+    private final Integer generalPrice;
+    private final Integer totalPrice;
 
     private Receipt(Integer memberShipDiscount, Integer promotionDiscount,
                     Integer generalPrice, Integer totalPrice) {
