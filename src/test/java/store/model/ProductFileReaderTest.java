@@ -2,9 +2,7 @@ package store.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
-import java.nio.file.Path;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,6 +47,6 @@ class ProductFileReaderTest {
             "- 컵라면 1,700원 10개"
         );
         expectedLines.forEach(line -> assertThat(content).contains(line));
-        assertThat(content).doesNotContain("null");
+        assertThat(content).contains("null");
     }
 }

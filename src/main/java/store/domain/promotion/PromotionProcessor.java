@@ -25,9 +25,9 @@ public class PromotionProcessor {
         this.userInteractionHandler = userInteractionHandler;
         this.promotions = promotions;
         this.promotionProducts = new HashMap<>(Map.of(
-        "benefit", 0,
-        "adjusted", 0,
-        "added", 0
+        "benefit", NO_ANY_PRODUCT,
+        "adjusted", NO_ANY_PRODUCT,
+        "added", NO_ANY_PRODUCT
     ));
     }
 
@@ -48,7 +48,6 @@ public class PromotionProcessor {
         int promotionBoon = getPromotionBoon(productWithPromotion);
         int result = processPurchase(productName, purchaseQuantity, productWithPromotion, promotionBoon);
         incrementBenefit(result);
-        //System.out.println(promotionProducts.get("added"));
         return this.promotionProducts;
     }
 
@@ -122,13 +121,11 @@ public class PromotionProcessor {
         return NO_ANY_PROMOTION_BOON;
     }
 
-    private int handleEqualPromotionBoonMinusOneCase(String productName, int purchaseQuantity,
-                                                     Product productWithPromotion) {
+    private int handleEqualPromotionBoonMinusOneCase(String productName, int purchaseQuantity,Product productWithPromotion) {
         String answer = userInteractionHandler.getValidatedAnswerForOneMoreProduct(productName);
         if (answer.equals(AnswerConstants.ANSWER_YES.getConstants())) {
             productWithPromotion.reduceQuantity(purchaseQuantity + ONE_PROMOTION_BOON);
             incrementAdded(ONE_PROMOTION_BOON);
-            //System.out.println(promotionProducts.get("added"));
             return ONE_PROMOTION_BOON;
         }
         productWithPromotion.reduceQuantity(purchaseQuantity);
@@ -152,18 +149,23 @@ public class PromotionProcessor {
             currentPurchaseQuantity = processSinglePromotionCycle(productName, productWithPromotion, 
                                                                 promotionBoon, currentPurchaseQuantity, result);
         }
-        return result -1;
+        return result - ONE_PROMOTION_BOON;
     }
 
-    private int processSinglePromotionCycle(String productName, Product productWithPromotion, 
-                                            int promotionBoon, int currentPurchaseQuantity, int result) {
+    private int processSinglePromotionCycle(
+        String productName, Product productWithPromotion, 
+        int promotionBoon, int currentPurchaseQuantity, int result
+    ) {
         int beforQuantity = productWithPromotion.getQuantity();                                        
-        int currentQuantity = productWithPromotion.firstReduceQuantityThanCheck(promotionBoon); //product 프로모션된거
+        int currentQuantity = productWithPromotion.firstReduceQuantityThanCheck(promotionBoon);
         currentPurchaseQuantity -= promotionBoon; 
+    
         if (currentQuantity < NO_ANY_PRODUCT) {
-            handleInsufficientQuantityInLoop(productName, currentQuantity, beforQuantity,
-                                                    currentPurchaseQuantity, promotionBoon, productWithPromotion);
-            return -1;                                        
+            handleInsufficientQuantityInLoop(
+                productName, currentQuantity, beforQuantity,
+                currentPurchaseQuantity, promotionBoon, productWithPromotion
+            );
+            return - ONE_PROMOTION_BOON;                                        
         }   
         return currentPurchaseQuantity;
     }
