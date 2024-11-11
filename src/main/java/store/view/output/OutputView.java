@@ -9,16 +9,16 @@ import java.util.Map;
 
 public class OutputView {
     private static final String RECEIPT_HEADER = "===============W 편의점================";
-    private static final String PROMOTION_HEADER = "==============증       정==============";
+    private static final String PROMOTION_HEADER = "==============증 정==============";
     private static final String RECEIPT_FOOTER = "=======================================";
 
-    private static final String COLUMN_FORMAT = "%-15s %6s %7s%n";
-    private static final String PRODUCT_LINE_FORMAT = "%-15s %3d %13s%n";
-    private static final String PROMOTION_LINE_FORMAT = "%-15s %3d%n";
-    private static final String TOTAL_PRICE_FORMAT = "%-15s %4d %13s%n";
-    private static final String MEMBER_SHIP_DISCOUNT_FORMAT = "%-15s %14s%n";
-    private static final String PROMOTION_DISCOUNT_FORMAT = "%-15s %19s%n";
-    private static final String FINAL_PRICE_FORMAT = "%-15s %19s%n";
+    private static final String COLUMN_FORMAT = "%-2s %-1s %s%n";
+    private static final String PRODUCT_LINE_FORMAT = "%-2s %-2d %s%n";
+    private static final String PROMOTION_LINE_FORMAT = "%-2s %d%n";
+    private static final String TOTAL_PRICE_FORMAT = "%-2s %-1d %s%n";
+    private static final String MEMBER_SHIP_DISCOUNT_FORMAT = "%-3s %s%n";
+    private static final String PROMOTION_DISCOUNT_FORMAT = "%-3s %s%n";
+    private static final String FINAL_PRICE_FORMAT = "%-4s %s%n";
     private static final String NEGATIVE_FORMAT = "-%,d";
     private static final String POSITIVE_FORMAT = "%,d";
 
