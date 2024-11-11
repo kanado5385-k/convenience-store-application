@@ -89,7 +89,7 @@ public class PromotionProcessor {
     }
 
     private int processPurchaseQuantity(String productName, int purchaseQuantity,
-                                        Product productWithPromotion, int promotionBoon) {
+        Product productWithPromotion, int promotionBoon) {
         if (isSpecialCase(purchaseQuantity, promotionBoon)) {
             return handleSpecialCase(productName, purchaseQuantity, productWithPromotion, promotionBoon);
         }
@@ -103,7 +103,7 @@ public class PromotionProcessor {
     }
 
     private int handleSpecialCase(String productName, int purchaseQuantity,
-                                Product productWithPromotion, int promotionBoon) {
+        Product productWithPromotion, int promotionBoon) {
         if (purchaseQuantity == promotionBoon)
             return handleEqualPromotionBoonCase(purchaseQuantity, productWithPromotion);
         if (purchaseQuantity < promotionBoon - GET_ONE_FREE)
@@ -190,13 +190,13 @@ public class PromotionProcessor {
     }
 
     private void handleInsufficientQuantityInLoop(String productName, int currentQuantity, int beforQuantity,
-                                            int currentPurchaseQuantity, int promotionBoon, Product productWithPromotion) {
+        int currentPurchaseQuantity, int promotionBoon, Product productWithPromotion) {
         currentPurchaseQuantity += promotionBoon;
         handleLackOfQuantity(productName, currentQuantity, beforQuantity, currentPurchaseQuantity, productWithPromotion);
     }
 
     private void handleLackOfQuantity(String productName, int currentQuantity, int beforQuantity,
-                                 int currentPurchaseQuantity, Product productWithPromotion) {
+        int currentPurchaseQuantity, Product productWithPromotion) {
         String answer = userInteractionHandler.getValidatedAnswerToLackOfQuantity(productName, currentPurchaseQuantity);
         processLackOfQuantityAnswer(productName, currentQuantity, beforQuantity, 
             answer, currentPurchaseQuantity, productWithPromotion);

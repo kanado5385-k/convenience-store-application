@@ -40,9 +40,9 @@ public class Inventory {
 
     private Optional<Product> findProductWithoutPromotion(String productName) {
         return this.products.stream()
-                .filter(product -> product.isSameName(productName))
-                .filter(product -> !product.hasPromotion())
-                .findFirst();
+            .filter(product -> product.isSameName(productName))
+            .filter(product -> !product.hasPromotion())
+            .findFirst();
     }
 
     public int getPriceOfProductPacket(String productName, int quantity) {

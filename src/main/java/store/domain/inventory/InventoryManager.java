@@ -21,15 +21,15 @@ public class InventoryManager {
 
     public Optional<Product> findProductWithPromotion(String productName) {
         return products.stream()
-                .filter(product -> product.isSameName(productName))
-                .filter(Product::hasPromotion)
-                .findFirst();
+            .filter(product -> product.isSameName(productName))
+            .filter(Product::hasPromotion)
+            .findFirst();
     }
 
     public Optional<Product> findProductWithoutPromotion(String productName) {
         return products.stream()
-                .filter(product -> product.isSameName(productName))
-                .filter(product -> !product.hasPromotion())
-                .findFirst();
+            .filter(product -> product.isSameName(productName))
+            .filter(product -> !product.hasPromotion())
+            .findFirst();
     }
 }
