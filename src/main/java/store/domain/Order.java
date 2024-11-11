@@ -43,22 +43,40 @@ public class Order {
         }
     }
 
+
     private static void processSingleOrder(String oneOrder, Inventory inventory, 
-                                       Map<String, Integer> promotionProduct, 
-                                       List<Product> boughtProducts) {
-        List<String> productAndQuantity = Splitter.splitOneOrder(oneOrder);
+        Map<String, Integer> promotionProduct, List<Product> boughtProducts) {
+
+        List<String> productAndQuantity = splitAndValidateOrder(oneOrder);
         String productName = productAndQuantity.get(INDEX_OF_PRODUCT_NAME);
         int purchaseQuantity = parseAndValidateQuantity(productAndQuantity.get(INDEX_OF_PRODUCT_QUANTITY));
-        int changedQuantity = 0;
-        changedQuantity = processProductBasedOnPromotion(productName, purchaseQuantity, inventory, promotionProduct);
+
+        purchaseQuantity = adjustPurchaseQuantityWithPromotion(productName, purchaseQuantity, inventory, promotionProduct);
+        addProductToBoughtList(boughtProducts, inventory, productName, purchaseQuantity);
+    }
+
+    private static List<String> splitAndValidateOrder(String oneOrder) {
+        return Splitter.splitOneOrder(oneOrder);
+    }
+
+    private static int adjustPurchaseQuantityWithPromotion(String productName, int purchaseQuantity, 
+        Inventory inventory, Map<String, Integer> promotionProduct) {
+        
+        int changedQuantity = processProductBasedOnPromotion(productName, purchaseQuantity, inventory, promotionProduct);
+        
         if (changedQuantity > 0) {
-            purchaseQuantity = changedQuantity;
+            return changedQuantity;
         }
+        return purchaseQuantity;
+    }
+
+    private static void addProductToBoughtList(List<Product> boughtProducts, Inventory inventory, 
+        String productName, int purchaseQuantity) {
         addBoughtProduct(boughtProducts, inventory, productName, purchaseQuantity);
     }
 
     private static int processProductBasedOnPromotion(String productName, int purchaseQuantity, 
-                                               Inventory inventory, Map<String, Integer> promotionProduct) {
+        Inventory inventory, Map<String, Integer> promotionProduct) {
         if (inventory.isProductWithPromotion(productName)) {
             return processPromotionProduct(productName, purchaseQuantity, inventory, promotionProduct);
         }
@@ -73,7 +91,7 @@ public class Order {
     }
 
     private static int processPromotionProduct(String productName, int purchaseQuantity, 
-                                            Inventory inventory, Map<String, Integer> promotionProduct) {
+        Inventory inventory, Map<String, Integer> promotionProduct) {
         Map<String, Integer> result = inventory.buyPromotionProduct(productName, purchaseQuantity);
         int promotionalBenefits = result.get("benefit");
         int rejectedQuantity = result.get("adjusted");
@@ -84,17 +102,17 @@ public class Order {
     }
 
     private static int adjustPurchaseQuantity(int purchaseQuantity, int rejectedQuantity, int addedQuantity) {
-            return purchaseQuantity - rejectedQuantity + addedQuantity;
+        return purchaseQuantity - rejectedQuantity + addedQuantity;
     }
 
     private static void updatePromotionProductBenefits(String productName, int promotionalBenefits, 
-                                                    Map<String, Integer> promotionProduct) {
+        Map<String, Integer> promotionProduct) {
         promotionProduct.put(productName, 
             promotionProduct.getOrDefault(productName, NO_SAME_NAME_IN_MAP) + promotionalBenefits);
     }
 
     private static void addBoughtProduct(List<Product> boughtProducts, Inventory inventory, 
-                                         String productName, int purchaseQuantity) {
+        String productName, int purchaseQuantity) {
         int priceOfOneProductPacket = inventory.getPriceOfProductPacket(productName, purchaseQuantity);
         Product boughtProduct = new Product(productName, priceOfOneProductPacket, purchaseQuantity, DOES_NOT_MATTER);
         boughtProducts.add(boughtProduct);

@@ -14,8 +14,8 @@ public class ReceiptDTO {
     private Integer totalPrice;                     
 
     public ReceiptDTO(Map<String, Integer> promotionProducts, List<Product> boughtProducts,
-                      Integer memberShipDiscount, Integer promotionDiscount,
-                      Integer generalPrice, Integer totalPrice) {
+        Integer memberShipDiscount, Integer promotionDiscount,
+        Integer generalPrice, Integer totalPrice) {
         this.promotionProducts = promotionProducts;
         this.boughtProducts = boughtProducts;
         this.memberShipDiscount = memberShipDiscount;

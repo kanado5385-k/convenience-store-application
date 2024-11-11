@@ -47,7 +47,7 @@ public class Receipt {
     }
 
     private static Integer calculatePromotionDiscount(List<Product> boughtProducts,
-                                                      Map<String, Integer> promotionProducts) {
+        Map<String, Integer> promotionProducts) {
         Integer promotionDiscount = NO_DISCOUNT;
         for (Product product : boughtProducts) {
             promotionDiscount += getProductPromotionDiscount(product, promotionProducts);

@@ -27,14 +27,14 @@ public class PromotionValidator {
     public boolean isProductWithPromotion(String productName) {
         Optional<Product> productOpt = findProductWithPromotion(productName);
         return productOpt.isPresent() && hasSufficientPromotionQuantity(productOpt.get())
-                && isPromotionDateValid(productOpt.get());
+            && isPromotionDateValid(productOpt.get());
     }
 
     private Optional<Product> findProductWithPromotion(String productName) {
         return products.stream()
-                .filter(product -> product.isSameName(productName))
-                .filter(Product::hasPromotion)
-                .findFirst();
+            .filter(product -> product.isSameName(productName))
+            .filter(Product::hasPromotion)
+            .findFirst();
     }
 
     private boolean hasSufficientPromotionQuantity(Product product) {
@@ -44,8 +44,8 @@ public class PromotionValidator {
     private boolean isPromotionDateValid(Product product) {
         String promotionName = product.getNameOfPromotion();
         Optional<Promotion> promotionOpt = promotions.stream()
-                .filter(promotion -> promotion.isSamePromotionName(promotionName))
-                .findFirst();
+            .filter(promotion -> promotion.isSamePromotionName(promotionName))
+            .findFirst();
 
         return promotionOpt.isPresent() && promotionOpt.get().isBetweenStartAndEndDate();
     }

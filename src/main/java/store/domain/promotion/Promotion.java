@@ -33,7 +33,7 @@ public class Promotion {
         LocalDate end = Parser.parseToDateFormat(endDate);
 
         return (todayDate.isEqual(start) || todayDate.isAfter(start)) && 
-               (todayDate.isEqual(end) || todayDate.isBefore(end));
+            (todayDate.isEqual(end) || todayDate.isBefore(end));
     }
 
     public Integer getPromotionBoon() {
