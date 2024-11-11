@@ -66,7 +66,7 @@ public class OutputView {
     }
 
     private void printNoAnyPromotion() {
-        System.out.println(IOMessage.PRINT_NO_ANY_PROMOTION_PRODUCT.getMessage());
+        //System.out.println(IOMessage.PRINT_NO_ANY_PROMOTION_PRODUCT.getMessage());
         System.out.println(RECEIPT_FOOTER);
     }
 
