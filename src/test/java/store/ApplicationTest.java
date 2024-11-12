@@ -1,16 +1,30 @@
 package store;
 
 import camp.nextstep.edu.missionutils.test.NsTest;
-import org.junit.jupiter.api.Test;
+import store.model.ProductFileReader;
 
 import java.time.LocalDate;
 
 import static camp.nextstep.edu.missionutils.test.Assertions.assertNowTest;
 import static camp.nextstep.edu.missionutils.test.Assertions.assertSimpleTest;
 import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 
+@TestMethodOrder(OrderAnnotation.class)
 class ApplicationTest extends NsTest {
+    private ProductFileReader productFileReader;
+
+    @BeforeEach
+    void setUp() {
+        productFileReader = new ProductFileReader();
+    }
+
     @Test
+    @Order(1)
     void 파일에_있는_상품_목록_출력() {
         assertSimpleTest(() -> {
             run("[물-1]", "N", "N");
@@ -38,6 +52,7 @@ class ApplicationTest extends NsTest {
     }
 
     @Test
+    @Order(2)
     void 여러_개의_일반_상품_구매() {
         assertSimpleTest(() -> {
             run("[비타민워터-3],[물-2],[정식도시락-2]", "N", "N");
@@ -46,6 +61,7 @@ class ApplicationTest extends NsTest {
     }
 
     @Test
+    @Order(3)
     void 기간에_해당하지_않는_프로모션_적용() {
         assertNowTest(() -> {
             run("[감자칩-2]", "N", "N");
@@ -54,6 +70,7 @@ class ApplicationTest extends NsTest {
     }
 
     @Test
+    @Order(4)
     void 예외_테스트() {
         assertSimpleTest(() -> {
             runException("[컵라면-12]", "N", "N");
@@ -61,8 +78,78 @@ class ApplicationTest extends NsTest {
         });
     }
 
+    @Test
+    @Order(5)
+    void 일반_상품_단일_구매() {
+        assertSimpleTest(() -> {
+            run("[물-2]", "N", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("내실돈1,000");
+        });
+    }
+
+    @Test
+    @Order(6)
+    void 혜택수량_보다_적은_프로모션_상품_구매() {
+        assertSimpleTest(() -> {
+            run("[콜라-1]", "N", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("내실돈1,000");
+        });
+    }
+
+    @Test
+    @Order(7)
+    void 혜택수량_보다_하나_덜_가져올_경우_Y() {
+        assertSimpleTest(() -> {
+            run("[콜라-2]", "Y", "N", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("행사할인-1,000");
+        });
+    }
+
+    @Test
+    @Order(8)
+    void 혜택수량_보다_더_가져오고_재고_상태_충분_경우_Y() {
+        assertSimpleTest(() -> {
+            run("[콜라-10]", "Y", "N", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("행사할인-2,000");
+            assertThat(output().replaceAll("\\s", "")).contains("내실돈8,000");
+        });
+    }
+
+    @Test
+    @Order(9)
+    void 혜택수량_보다_더_가져오고_재고_상태와_수량_같을_경우_N() {
+        assertSimpleTest(() -> {
+            run("[사이다-8]", "N", "N", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("행사할인-2,000");
+            assertThat(output().replaceAll("\\s", "")).contains("내실돈4,000");
+        });
+    }
+
+    @Test
+    @Order(10)
+    void readFileAsString_파일내용읽기() {
+        String content = productFileReader.readFileAsString();
+        assertThat(content).contains("콜라,1000,0,탄산2+1");
+        assertThat(content).contains("콜라,1000,7,null");
+        assertThat(content).contains("사이다,1000,2,탄산2+1");
+        assertThat(content).contains("사이다,1000,7,null");
+        assertThat(content).contains("물,500,5,null");
+    }
+
     @Override
     public void runMain() {
         Application.main(new String[]{});
     }
 }
+
+
+/*   
+    @Test
+    void 혜택수량_보다_더_가져오고_재고_상태_충분_경우() {
+        assertSimpleTest(() -> {
+            run("[콜라-6]", "N", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("행사할인-2,000");
+            assertThat(output().replaceAll("\\s", "")).contains("내실돈4,000");
+        });
+    }
+ */ 
