@@ -1,5 +1,3 @@
-# java-convenience-store-precourse
-
 ## 목차 📑
 
 - 애플리케이션 소개
